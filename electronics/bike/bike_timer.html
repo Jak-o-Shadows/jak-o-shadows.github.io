@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+BASED ON: Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+Name       : TerraFirma
+Version    : 1.0
+Released   : 20080425
+-->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<title>Bike Timer -- Jak-o-Shadows</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.users.sourceforge.net/css/default.css" />
+<style type="text/css">
+   li {
+     line-height: 40px;
+   }
+</style>
+<!--Start annoying javascript -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33695524-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/userapps/piwik/jak-o-shadows/" : "http://sourceforge.net/userapps/piwik/jak-o-shadows/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/userapps/piwik/jak-o-shadows/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'http://laptimer.sourceforge.net/owa/owa/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', '515165129f3acb5810e6878e3db05477']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+owa_cmds.push(['trackDomStream']);
+
+(function() {
+	var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+	owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+	_owa.src = owa_baseUrl + 'modules/base/js/owa.tracker-combined-min.js';
+	var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+<!-- stop annoying javascript-->
+
+</head>
+<body>
+
+<div id="outer">
+
+	<div id="upbg"></div>
+
+	<div id="inner">
+
+		<div id="header">
+			<h1><a href="http://jak-o-shadows.users.sourceforge.net"><span>Jak_o_Shadows</span>Web</a></h1>
+			<!--<h2>by nodethirtythree + fct</h2>-->
+		</div>
+	
+		<div id="splash"></div>
+	
+		<div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.users.sourceforge.net/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/nerf/nerf.html">Nerf</a></li>
+                        <li><a href="http://jak-o-shadows.users.sourceforge.net/linux/linux.html">Linux</a></li>
+			</ul>
+
+		<div id="date">2015-03-01 21:06</div>
+		</div>
+	
+
+		<div id="primarycontent">
+			
+<h1> Bike Timer</h1>
+    <p><a href="diagram.svg"><img src="diagram.png" alt="diagram of sensor" width="257" height="149" /></a></p>
+    <p>Above is a simple circuit diagram. There is also a <a href="bikeTimer.sch">gEDA schematic version</a>, and the <a href="bikeTimer.png">subsequent rendering.</a></p>
+    <p>This circuit (and accompanying program) will tell you every time the tire of your bike completes one revolution. This doesn't sound very useful does it? However, this enables you to calculate the rpm, cadence, distance travelled and average speed. While you can buy little things that clip onto your bike that do this, this has the advantage of being connected to a computer. This is an advantage because you can more easily log your training (realistically, this is mostly used for a training bike on a stand). It also allows you to make a game out of it (I intend to, when i get the input working properly). Anyway, onto how it works.</p>
+<p>This circuit emulates an old gameport joystick. All it needs is some wires, a computer with a gameport, a 30-80k resistor and a photoresistor (Commonly found in solar panels, and streetlamps). The pins 3 and 1 would normally be connected via a pot, which would be changed depending on the movement of the joystick on the x axis.</p>
+<p>&nbsp;</p>
+<p>From now on, i'm going to assume you're working on a GNU/Linux computer (what else are you going to run on your 8 year old computer?). However, the end program <strong>should</strong> work perfectly on any variety of windows that supports recent versions of python and pygame (2.6x, 1.8).</p>
+<p>&nbsp;</p>
+<p>If you're using linux, you probably won't have the driver for analog joysticks enabled. To do this, open a terminal and type (note that you must enter your root password. Ubuntu users can use sudo instead)</p>
+<blockquote>
+  <p><em>su -c 'modprobe analog'</em></p>
+</blockquote>
+<p>This loads the module for analog joysticks. To check if this has worked, in the terminal type <em>dmesg.</em> If there is any kind of weird error message, double and triple check your circuit. If it worked, there should be a message identifying the type of joystick your distro has detected. Mine detects a 2 axis, 2 button joystick.</p>
+<p>&nbsp;</p>
+<p>Alright. We've got the physical part connected and your OS is picking it up. Now we need to test whether it's working (Note that it's preferable to use tested parts in this. A digital multimeter is very useful, but not essential). To do this, open a terminal and type <em>jstest /dev/input/js0</em>. (If you  get an error message such as no device found, the input may be somewhere else. Thats where it was on my Fedora 12 box). To actually use the device, you need a torch. A LED torch is great, as is a laser, but a cheap laser pointer will typically not last very long due to overheating. To obtain greater reliability, put the photoresistor in a bit of plastic garden pipe or hose. Anyway, when you block the light between the LED and the photoresistor, one of the values in <em>jstest</em> should change. If you're done like i have, it should be the first number.</p>
+<p>&nbsp;</p>
+<p>Ok. We've got the computer picking up the input. Now we have to do some clever programming. When i saw we, i mean I.<strong> </strong>I'll outline my methods and post what code i have though.</p>
+<p align="center"><a href="intelligence.py">Code</a> (Need to open with a python editor if not using *nix)</p>
+
+<p>Using pygame, we can make a class that harvests the information. However there is one big (<strong>huge</strong>) problem that prevents us from just calling the get_status() function. <em>It calls it too fast!</em> For every revolution, there is about a 5cm gap where the light can shine through. The rest of the tire is blacked out with paper that prevents the light from shining through. When just starting off, there is tens of thousands of<strong>True</strong> signals being recieved by pygame. However, when going flat out (or at least as fast as i can go on my bike without it coming off the stand.), the timer recieves it in perfect time. To me, that signals that some clever programming is needed. With several chats to the people in the #electronics channel on the freenode irc, i determined that something that checks the time between subsequent signals is the way to go. If the time between them is vastly off what is expected, discard it. It is implemented successfully, however i no longer have the bike inside. It's kinda hard to test these things by waving your hands in front of the LDR, you don't move anywhere fast enough.</p>
+<p>&nbsp;</p>
+<blockquote>
+  <p><strong>Download</strong></p>
+  <p>The GUI requires that the file <em>intelligence.py</em> be in the same folder as gui.py. I don't actually have cadence working, because that requires working out the gear ratio. You'rs will probably be different as well. Also speed isn't worked out in the normal km/h.</p>
+<ul>
+  <li><a href="gui.py">GUI </a></li>
+  <li><a href="intelligence.py">BACKEND</a></li>
+</ul>
+  <p><strong>Improvements</strong></p>
+</blockquote>
+<p>It's perfectly feasible to use a reed switch instead. Heck, it's even possible to just substitute the reed switch with the photoresistor (not tested). However, if you look at a diagram of a gameport, you'll see it's got seperate pins for buttons. If using a reed switch (or any other type of digital switch), i would recommend plugging into pins 2 and 4. This would require fairly minor changes to the code, mostly in <em>intelligence.py</em> function <em>get_status()</em>.</p>
+
+		</div>
+		
+		<div id="secondarycontent">
+
+			<!-- secondary content start -->
+		
+			<!--<h3>About Me</h3>
+			<div class="content">
+				<img src="images/pic2.jpg" class="picB" alt="" />
+				<p><strong>Nullam turpis</strong> vestibulum et sed dolore. Nulla facilisi. Sed tortor. lobortis commodo. <a href="#">More ...</a></p>
+			</div>
+			-->
+			
+			<h3>Topics</h3>
+			<div class="content">
+				<ul class="linklist">
+				<a href="bike_timer.html">Bike_timer</a><br />
+
+				<a href="..\..\index.html">Index</a><br />
+<a href="..\..\blender.html">Blender</a><br />
+<a href="..\..\thinking.html">Thinking</a><br />
+<a href="..\..\thinking2.html">Thinking2</a><br />
+<a href="..\..\quickWorks.html">Quickworks</a><br />
+<a href="..\..\blairfoil.html">Blairfoil</a><br />
+<a href="..\..\casio.html">Casio</a><br />
+<a href="..\..\electronics.html">Electronics</a><br />
+<a href="..\..\3dprinter.html">3dprinter</a><br />
+<a href="..\..\bike_timer.html">Bike_timer</a><br />
+<a href="..\..\conky.html">Conky</a><br />
+<a href="..\..\linux.html">Linux</a><br />
+<a href="..\..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\..\nerf.html">Nerf</a><br />
+<a href="..\..\homemades.html">Homemades</a><br />
+<a href="..\..\mods.html">Mods</a><br />
+<a href="..\..\otherstuff.html">Otherstuff</a><br />
+<a href="..\..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\..\jgui.html">Jgui</a><br />
+<a href="..\..\python.html">Python</a><br />
+<a href="..\..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\..\lapTimer.html">Laptimer</a><br />
+<a href="..\..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\..\jlogger.html">Jlogger</a><br />
+<a href="..\..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\..\armik.html">Armik</a><br />
+<a href="..\..\life.html">Life</a><br />
+<a href="..\..\main.html">Main</a><br />
+<a href="..\..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\..\wr.html">Wr</a><br />
+<a href="..\..\wradvanced.html">Wradvanced</a><br />
+<a href="..\..\wrguidance.html">Wrguidance</a><br />
+<a href="..\..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\..\wrutc.html">Wrutc</a><br />
+<a href="..\..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\..\wrsafety.html">Wrsafety</a><br />
+<a href="..\..\index.html">Index</a><br />
+<a href="..\..\blender.html">Blender</a><br />
+<a href="..\..\thinking.html">Thinking</a><br />
+<a href="..\..\thinking2.html">Thinking2</a><br />
+<a href="..\..\quickWorks.html">Quickworks</a><br />
+<a href="..\..\blairfoil.html">Blairfoil</a><br />
+<a href="..\..\casio.html">Casio</a><br />
+<a href="..\..\electronics.html">Electronics</a><br />
+<a href="..\..\3dprinter.html">3dprinter</a><br />
+<a href="..\..\bike_timer.html">Bike_timer</a><br />
+<a href="..\..\conky.html">Conky</a><br />
+<a href="..\..\linux.html">Linux</a><br />
+<a href="..\..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\..\nerf.html">Nerf</a><br />
+<a href="..\..\homemades.html">Homemades</a><br />
+<a href="..\..\mods.html">Mods</a><br />
+<a href="..\..\otherstuff.html">Otherstuff</a><br />
+<a href="..\..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\..\jgui.html">Jgui</a><br />
+<a href="..\..\python.html">Python</a><br />
+<a href="..\..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\..\lapTimer.html">Laptimer</a><br />
+<a href="..\..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\..\jlogger.html">Jlogger</a><br />
+<a href="..\..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\..\armik.html">Armik</a><br />
+<a href="..\..\life.html">Life</a><br />
+<a href="..\..\main.html">Main</a><br />
+<a href="..\..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\..\wr.html">Wr</a><br />
+<a href="..\..\wradvanced.html">Wradvanced</a><br />
+<a href="..\..\wrguidance.html">Wrguidance</a><br />
+<a href="..\..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\..\wrutc.html">Wrutc</a><br />
+<a href="..\..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\..\wrsafety.html">Wrsafety</a><br />
+
+				</ul>
+			</div>
+
+			<!-- secondary content end -->
+
+		</div>
+	
+		<div id="footer">
+		
+			&copy; All works licensed under the GPL general public license v3, unless otherwise noted. Content may include works based upon public domain content. Design based on <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a> + <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>
+		
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>
+

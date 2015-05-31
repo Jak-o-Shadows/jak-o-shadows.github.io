@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+BASED ON: Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+Name       : TerraFirma
+Version    : 1.0
+Released   : 20080425
+-->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<title>Conky -- Jak_o_Shadows Web</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.users.sourceforge.net/css/default.css" />
+<link rel="stylesheet" href="../css/pygments_style.css">
+<!--Start annoying javascript -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33695524-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/userapps/piwik/jak-o-shadows/" : "http://sourceforge.net/userapps/piwik/jak-o-shadows/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/userapps/piwik/jak-o-shadows/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'http://laptimer.sourceforge.net/owa/owa/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', '515165129f3acb5810e6878e3db05477']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+owa_cmds.push(['trackDomStream']);
+
+(function() {
+	var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+	owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+	_owa.src = owa_baseUrl + 'modules/base/js/owa.tracker-combined-min.js';
+	var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+<!-- stop annoying javascript-->
+
+</head>
+<body>
+
+<div id="outer">
+
+	<div id="upbg"></div>
+
+	<div id="inner">
+
+		<div id="header">
+			<h1><a href="http://jak-o-shadows.users.sourceforge.net"><span>Jak_o_Shadows</span>Web</a></h1>
+			<!--<h2>by nodethirtythree + fct</h2>-->
+		</div>
+	
+		<div id="splash"></div>
+	
+		<div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.users.sourceforge.net/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/nerf/nerf.html">Nerf</a></li>
+                        <li><a href="http://jak-o-shadows.users.sourceforge.net/linux/linux.html">Linux</a></li>
+			</ul>
+
+		<div id="date">2015-03-01 21:06</div>
+		</div>
+	
+
+		<div id="primarycontent">
+			
+I finally decided that I wanted my calendar to show on my desktop. So, I used conky, and a program called gcalcli to do it.
+<br />
+<p>
+First, install conky:
+    <br />
+    "sudo apt-get install conky"
+    <br />or<br />
+    "su -c 'yum install conky'"
+    <br />
+Next, install gcalcli:
+    <br />
+    "sudo apt-get install gcalcli"
+    <br />or<br />
+    "su -c 'yum install gcalcli'"
+    <br />
+</p>
+<p>
+<h1>Various Configuration Files</h1>
+<br />
+Create a file named .conkyrc in your home directory. I use the following config:
+    <p>
+    
+<div class="hlcode">
+<div class="syntax"><pre><span class="err">#</span> <span class="nv">conky</span> <span class="nv">configuration</span>
+<span class="err">#</span> <span class="nv">edited</span> <span class="nv">by</span> <span class="nv">kaivalagi</span>
+<span class="err">#</span><span class="nv">edited</span> <span class="nv">some</span> <span class="nv">by</span> <span class="nv">Jak_o_Shadows</span>
+
+<span class="err">#</span> <span class="nv">set</span> <span class="k">to</span> <span class="nv">yes</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">Conky</span> <span class="k">to</span> <span class="nv">be</span> <span class="nv">forked</span> <span class="k">in</span> <span class="nv">the</span> <span class="nv">background</span>
+<span class="nv">background</span> <span class="nv">no</span>
+
+<span class="err">#</span> <span class="nv">Use</span> <span class="nv">Xft</span><span class="o">?</span>
+<span class="nv">use_xft</span> <span class="nv">yes</span>
+
+<span class="err">#</span> <span class="nv">Xft</span> <span class="nv">font</span> <span class="k">when</span> <span class="nv">Xft</span> <span class="nv">is</span> <span class="nv">enabled</span>
+<span class="nv">xftfont</span> <span class="nv">Bitstream</span> <span class="nv">Vera</span> <span class="nv">Sans</span> <span class="nv">Mono</span><span class="p">:</span><span class="nv">size</span><span class="o">=</span><span class="mi">9</span>
+
+<span class="err">#</span> <span class="nv">Text</span> <span class="nv">alpha</span> <span class="k">when</span> <span class="k">using</span> <span class="nv">Xft</span>
+<span class="nv">xftalpha</span> <span class="mi">0</span><span class="p">.</span><span class="mi">8</span>
+
+<span class="err">#</span> <span class="k">Update</span> <span class="nv">interval</span> <span class="k">in</span> <span class="nv">seconds</span>
+<span class="nv">update_interval</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span>
+
+<span class="err">#</span> <span class="nv">This</span> <span class="nv">is</span> <span class="nv">the</span> <span class="nv">number</span> <span class="k">of</span> <span class="k">times</span> <span class="nv">Conky</span> <span class="nv">will</span> <span class="k">update</span> <span class="nv">before</span> <span class="nv">quitting</span><span class="p">.</span>
+<span class="err">#</span> <span class="nv">Set</span> <span class="k">to</span> <span class="nv">zero</span> <span class="k">to</span> <span class="nv">run</span> <span class="nv">forever</span><span class="p">.</span>
+<span class="nv">total_run_times</span> <span class="mi">0</span>
+
+<span class="err">#</span> <span class="nv">Use</span> <span class="nv">double</span> <span class="nv">buffering</span> <span class="p">(</span><span class="nv">reduces</span> <span class="nv">flicker</span><span class="p">,</span> <span class="nv">may</span> <span class="o">not</span> <span class="nv">work</span> <span class="k">for</span> <span class="nv">everyone</span><span class="p">)</span>
+<span class="nv">double_buffer</span> <span class="nv">yes</span>
+
+<span class="err">#</span> <span class="k">Minimum</span> <span class="nv">size</span> <span class="k">of</span> <span class="nv">text</span> <span class="nv">area</span>
+<span class="nv">minimum_size</span> <span class="mi">350</span> <span class="mi">5</span>
+<span class="err">#</span><span class="nv">maximum_width</span> <span class="mi">350</span>
+
+<span class="err">#</span> <span class="nv">Draw</span> <span class="nv">shades</span><span class="o">?</span>
+<span class="nv">draw_shades</span> <span class="nv">yes</span>
+
+<span class="err">#</span> <span class="nv">Draw</span> <span class="nv">outlines</span><span class="o">?</span>
+<span class="nv">draw_outline</span> <span class="nv">no</span>
+
+<span class="err">#</span> <span class="nv">Draw</span> <span class="nv">borders</span> <span class="nv">around</span> <span class="nv">text</span>
+<span class="nv">draw_borders</span> <span class="nv">no</span>
+<span class="nv">draw_graph_borders</span> <span class="nv">yes</span>
+
+<span class="err">#</span> <span class="nv">Stippled</span> <span class="nv">borders</span><span class="o">?</span>
+<span class="nv">stippled_borders</span> <span class="mi">0</span>
+
+<span class="err">#</span> <span class="nv">border</span> <span class="nv">margins</span>
+<span class="err">#</span><span class="nv">border_margin</span> <span class="mi">0</span>
+
+<span class="err">#</span> <span class="nv">border</span> <span class="nv">width</span>
+<span class="nv">border_width</span> <span class="mi">0</span>
+
+<span class="err">#</span> <span class="k">Default</span> <span class="nv">colors</span> <span class="o">and</span> <span class="nv">also</span> <span class="nv">border</span> <span class="nv">colors</span>
+<span class="nv">default_color</span> <span class="nv">white</span>
+<span class="nv">default_shade_color</span> <span class="nv">black</span>
+<span class="nv">default_outline_color</span> <span class="nv">white</span>
+
+<span class="err">#</span> <span class="nv">own</span> <span class="k">window</span> <span class="nv">options</span>
+<span class="nv">own_window</span>		<span class="nv">yes</span>
+<span class="nv">own_window_transparent</span>	<span class="nv">yes</span>
+<span class="nv">own_window_type</span>		<span class="nv">desktop</span>
+<span class="nv">own_window_hints</span>	<span class="nv">undecorated</span><span class="p">,</span><span class="nv">below</span><span class="p">,</span><span class="nv">sticky</span><span class="p">,</span><span class="nv">skip_taskbar</span><span class="p">,</span><span class="nv">skip_pager</span>
+
+<span class="err">#</span> <span class="nv">Text</span> <span class="nv">alignment</span><span class="p">,</span> <span class="nv">other</span> <span class="nv">possible</span> <span class="k">values</span> <span class="nv">are</span> <span class="nv">commented</span>
+<span class="err">#</span><span class="nv">alignment</span> <span class="nv">top_left</span>
+<span class="err">#</span><span class="nv">alignment</span> <span class="nv">top_right</span>
+<span class="err">#</span><span class="nv">alignment</span> <span class="nv">bottom_left</span>
+<span class="nv">alignment</span> <span class="nv">top_left</span>
+
+<span class="err">#</span> <span class="nv">Gap</span> <span class="nv">between</span> <span class="nv">borders</span> <span class="k">of</span> <span class="nv">screen</span> <span class="o">and</span> <span class="nv">text</span>
+<span class="err">#</span> <span class="nv">same</span> <span class="nv">thing</span> <span class="nv">as</span> <span class="nv">passing</span> <span class="o">-</span><span class="nv">x</span> <span class="k">at</span> <span class="nv">command</span> <span class="nv">line</span>
+<span class="nv">gap_x</span> <span class="mi">10</span>
+<span class="nv">gap_y</span> <span class="mi">25</span>
+
+<span class="err">#</span> <span class="k">Subtract</span> <span class="nv">file</span> <span class="nv">system</span> <span class="nv">buffers</span> <span class="k">from</span> <span class="nv">used</span> <span class="nv">memory</span><span class="o">?</span>
+<span class="nv">no_buffers</span> <span class="nv">yes</span>
+
+<span class="err">#</span> <span class="nv">set</span> <span class="k">to</span> <span class="nv">yes</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">all</span> <span class="nv">text</span> <span class="k">to</span> <span class="nv">be</span> <span class="k">in</span> <span class="nv">uppercase</span>
+<span class="nv">uppercase</span> <span class="nv">no</span>
+
+<span class="err">#</span> <span class="nv">number</span> <span class="k">of</span> <span class="nv">cpu</span> <span class="nv">samples</span> <span class="k">to</span> <span class="nv">average</span>
+<span class="err">#</span> <span class="nv">set</span> <span class="k">to</span> <span class="mi">1</span> <span class="k">to</span> <span class="nv">disable</span> <span class="nv">averaging</span>
+<span class="nv">cpu_avg_samples</span> <span class="mi">2</span>
+
+<span class="err">#</span> <span class="nv">number</span> <span class="k">of</span> <span class="nv">net</span> <span class="nv">samples</span> <span class="k">to</span> <span class="nv">average</span>
+<span class="err">#</span> <span class="nv">set</span> <span class="k">to</span> <span class="mi">1</span> <span class="k">to</span> <span class="nv">disable</span> <span class="nv">averaging</span>
+<span class="nv">net_avg_samples</span> <span class="mi">2</span>
+
+<span class="err">#</span> <span class="nv">Force</span> <span class="nv">UTF8</span><span class="o">?</span> <span class="nv">note</span> <span class="nv">that</span> <span class="nv">UTF8</span> <span class="nv">support</span> <span class="nv">required</span> <span class="nv">XFT</span>
+<span class="nv">override_utf8_locale</span> <span class="nv">no</span>
+
+<span class="err">#</span> <span class="k">Add</span> <span class="nv">spaces</span> <span class="k">to</span> <span class="nv">keep</span> <span class="nv">things</span> <span class="k">from</span> <span class="nv">moving</span> <span class="nv">about</span><span class="o">?</span>  <span class="nv">This</span> <span class="nv">only</span> <span class="nv">affects</span> <span class="nv">certain</span> <span class="nv">objects</span><span class="p">.</span>
+<span class="nv">use_spacer</span> <span class="k">right</span>
+
+<span class="nv">text_buffer_size</span> <span class="mi">2048</span>
+
+<span class="err">#</span> <span class="nv">colours</span>
+<span class="nv">color1</span> <span class="nv">white</span>
+<span class="err">#</span> <span class="nv">light</span> <span class="nv">blue</span>
+<span class="nv">color2</span> <span class="mi">6892</span><span class="nv">C6</span>
+<span class="err">#</span> <span class="nv">orange</span>
+<span class="nv">color3</span> <span class="nv">E77320</span>
+<span class="err">#</span> <span class="nv">green</span>
+<span class="nv">color4</span> <span class="mi">78</span><span class="nv">BF39</span>
+<span class="err">#</span> <span class="nv">red</span>
+<span class="nv">color5</span> <span class="nv">CC0000</span>
+
+<span class="err">#</span> <span class="nv">variable</span> <span class="nv">is</span> <span class="nv">given</span> <span class="nv">either</span> <span class="k">in</span> <span class="k">format</span> <span class="err">$</span><span class="nv">variable</span> <span class="nv">or</span> <span class="k">in</span> <span class="err">${</span><span class="nv">variable</span><span class="err">}</span><span class="p">.</span> <span class="nv">Latter</span>
+<span class="err">#</span> <span class="nv">allows</span> <span class="nv">characters</span> <span class="k">right</span> <span class="nv">after</span> <span class="nv">the</span> <span class="nv">variable</span> <span class="o">and</span> <span class="nv">must</span> <span class="nv">be</span> <span class="nv">used</span> <span class="k">in</span> <span class="nv">network</span>
+<span class="err">#</span> <span class="nv">stuff</span> <span class="nv">because</span> <span class="k">of</span> <span class="nv">an</span> <span class="nv">argument</span>
+
+<span class="err">#</span> <span class="nv">stuff</span> <span class="nv">after</span> <span class="s1">&#39;TEXT&#39;</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">formatted</span> <span class="k">on</span> <span class="nv">screen</span>
+
+<span class="nv">TEXT</span>
+
+<span class="err">${</span><span class="nv">color1</span><span class="err">}${</span><span class="nv">font</span> <span class="nv">Bitstream</span> <span class="nv">Vera</span> <span class="nv">Sans</span> <span class="nv">Mono</span><span class="p">:</span><span class="nv">size</span><span class="o">=</span><span class="mi">21</span><span class="err">}</span>
+<span class="err">${</span><span class="nv">execpi</span> <span class="mi">600</span> <span class="nv">gcalcli</span> <span class="o">--</span><span class="mi">24</span><span class="nv">hr</span> <span class="nv">calw</span> <span class="mi">2</span> <span class="err">|</span> <span class="nv">python</span> <span class="err">~</span><span class="p">/</span><span class="nv">conky</span><span class="p">/</span><span class="nv">translate</span><span class="p">.</span><span class="nv">py</span><span class="err">}</span>
+<span class="err">${</span><span class="nv">font</span><span class="err">}</span>
+</pre></div>
+
+    </p>
+Create a file named .gclalclirc in your home directory. Fill in the details:
+    <p>
+    
+<div class="hlcode">
+<div class="syntax"><pre><span class="p">[</span><span class="nv">gcalcli</span><span class="p">]</span>
+<span class="nv">user</span><span class="p">:</span> <span class="nv">user</span><span class="p">.</span><span class="nv">name</span><span class="err">@</span><span class="nv">gmail</span><span class="p">.</span><span class="nv">com</span>
+<span class="nv">pw</span><span class="p">:</span> <span class="nv">password</span>
+<span class="nv">cals</span><span class="p">:</span> <span class="nv">owner</span>
+</pre></div>
+
+    </p>
+<h1>For Cinnamon/ATI users</h1>
+<br />
+Unfortunatley, the <em>--nc</em> option for gcalcli appears not to be working. This results in messed up formatting in conky.
+The solution is to strip this out using a small python script, with a regex. I put this script in ~/conky/translate.py
+<p>
+
+<div class="hlcode">
+<div class="syntax"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+	<span class="n">detector</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;</span><span class="se"></span><span class="s">\[\d+(?:;\d+)?m&#39;</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">xreadlines</span><span class="p">():</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">detector</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="n">line</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+	<span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+</div>
+
+</p>
+Autostart conky however you want! I use Cinnamon's auto-start, but likely cron or similar would work.
+</p>
+
+
+		</div>
+		
+		<div id="secondarycontent">
+
+			<!-- secondary content start -->
+		
+			<!--<h3>About Me</h3>
+			<div class="content">
+				<img src="images/pic2.jpg" class="picB" alt="" />
+				<p><strong>Nullam turpis</strong> vestibulum et sed dolore. Nulla facilisi. Sed tortor. lobortis commodo. <a href="#">More ...</a></p>
+			</div>
+			-->
+			
+			<h3>Topics</h3>
+			<div class="content">
+				<ul class="linklist">
+				<a href="conky.html">Conky</a><br />
+<a href="linux.html">Linux</a><br />
+
+				<a href="..\index.html">Index</a><br />
+<a href="..\blender.html">Blender</a><br />
+<a href="..\thinking.html">Thinking</a><br />
+<a href="..\thinking2.html">Thinking2</a><br />
+<a href="..\quickWorks.html">Quickworks</a><br />
+<a href="..\blairfoil.html">Blairfoil</a><br />
+<a href="..\casio.html">Casio</a><br />
+<a href="..\electronics.html">Electronics</a><br />
+<a href="..\3dprinter.html">3dprinter</a><br />
+<a href="..\bike_timer.html">Bike_timer</a><br />
+<a href="..\conky.html">Conky</a><br />
+<a href="..\linux.html">Linux</a><br />
+<a href="..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\nerf.html">Nerf</a><br />
+<a href="..\homemades.html">Homemades</a><br />
+<a href="..\mods.html">Mods</a><br />
+<a href="..\otherstuff.html">Otherstuff</a><br />
+<a href="..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\jgui.html">Jgui</a><br />
+<a href="..\python.html">Python</a><br />
+<a href="..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\lapTimer.html">Laptimer</a><br />
+<a href="..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\jlogger.html">Jlogger</a><br />
+<a href="..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\armik.html">Armik</a><br />
+<a href="..\life.html">Life</a><br />
+<a href="..\main.html">Main</a><br />
+<a href="..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\wr.html">Wr</a><br />
+<a href="..\wradvanced.html">Wradvanced</a><br />
+<a href="..\wrguidance.html">Wrguidance</a><br />
+<a href="..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\wrutc.html">Wrutc</a><br />
+<a href="..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\wrsafety.html">Wrsafety</a><br />
+<a href="..\index.html">Index</a><br />
+<a href="..\blender.html">Blender</a><br />
+<a href="..\thinking.html">Thinking</a><br />
+<a href="..\thinking2.html">Thinking2</a><br />
+<a href="..\quickWorks.html">Quickworks</a><br />
+<a href="..\blairfoil.html">Blairfoil</a><br />
+<a href="..\casio.html">Casio</a><br />
+<a href="..\electronics.html">Electronics</a><br />
+<a href="..\3dprinter.html">3dprinter</a><br />
+<a href="..\bike_timer.html">Bike_timer</a><br />
+<a href="..\conky.html">Conky</a><br />
+<a href="..\linux.html">Linux</a><br />
+<a href="..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\nerf.html">Nerf</a><br />
+<a href="..\homemades.html">Homemades</a><br />
+<a href="..\mods.html">Mods</a><br />
+<a href="..\otherstuff.html">Otherstuff</a><br />
+<a href="..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\jgui.html">Jgui</a><br />
+<a href="..\python.html">Python</a><br />
+<a href="..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\lapTimer.html">Laptimer</a><br />
+<a href="..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\jlogger.html">Jlogger</a><br />
+<a href="..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\armik.html">Armik</a><br />
+<a href="..\life.html">Life</a><br />
+<a href="..\main.html">Main</a><br />
+<a href="..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\wr.html">Wr</a><br />
+<a href="..\wradvanced.html">Wradvanced</a><br />
+<a href="..\wrguidance.html">Wrguidance</a><br />
+<a href="..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\wrutc.html">Wrutc</a><br />
+<a href="..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\wrsafety.html">Wrsafety</a><br />
+
+				</ul>
+			</div>
+
+			<!-- secondary content end -->
+
+		</div>
+	
+		<div id="footer">
+		
+			&copy; All works licensed under the GPL general public license v3, unless otherwise noted. Content may include works based upon public domain content. Design based on <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a> + <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>
+		
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+BASED ON: Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+Name       : TerraFirma
+Version    : 1.0
+Released   : 20080425
+-->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<title>Inverse Kinematics For Virtual Robot Arm -- Jak-o-Shadows web</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.users.sourceforge.net/css/default.css" />
+<style type="text/css">
+   li {
+     line-height: 40px;
+   }
+</style>
+
+<!--Start annoying javascript -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33695524-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/userapps/piwik/jak-o-shadows/" : "http://sourceforge.net/userapps/piwik/jak-o-shadows/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/userapps/piwik/jak-o-shadows/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'http://laptimer.sourceforge.net/owa/owa/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', '515165129f3acb5810e6878e3db05477']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+owa_cmds.push(['trackDomStream']);
+
+(function() {
+	var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+	owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+	_owa.src = owa_baseUrl + 'modules/base/js/owa.tracker-combined-min.js';
+	var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+<!-- stop annoying javascript-->
+
+</head>
+<body>
+
+<div id="outer">
+
+	<div id="upbg"></div>
+
+	<div id="inner">
+
+		<div id="header">
+			<h1><a href="http://jak-o-shadows.users.sourceforge.net"><span>Jak_o_Shadows</span>Web</a></h1>
+			<!--<h2>by nodethirtythree + fct</h2>-->
+		</div>
+	
+		<div id="splash"></div>
+	
+		<div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.users.sourceforge.net/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/nerf/nerf.html">Nerf</a></li>
+                        <li><a href="http://jak-o-shadows.users.sourceforge.net/linux/linux.html">Linux</a></li>
+			</ul>
+
+		<div id="date">2015-03-01 21:06</div>
+		</div>
+	
+
+		<div id="primarycontent">
+			
+
+<h1>Inverse Kinematics For Virtual Robot Arm</h1>
+    <p>Inverse Kinematics (IK) is the method of automatically calculating the locations/angles of a mechanical system based upon a desired end location/state. For a robotic arm, it is common that the end point of the arm is set, as if to grab an object, and for the arm to be able to calculate each position.
+    This page outlines some basic methods for IK, including Jacobian Transpose, Jacobian Psuedo-Inverse, and Cyclic Coordinate Descent. Also present is a 2D visualisation method using pygame.
+    </p>
+    <h2>Cyclic Coordinate Descent</h2>
+        <p>Cyclic Coordinate Descent (CCD) is a simple algorithm that primarily seeks to minimise the distance, or error, between the location of the end effector and target location.
+        Starting at the outermost end link (the end effector itself), each link is rotated such that the error is minimised.
+        Crucially, it should be noted that for all subsequent links after the end effector, the error is minimised purely for moving the current link, while keeping any further link angles constant.
+        The angle is calculated using the dot product between the vector from the links origin to the end effector <em>(pe-pc)</em> and the vector from the links origin to the target <em>(goal-pc)</em>.
+        The dot product can be seen in figure 1. The angle <em>theta</em> can be calculated.
+        <figure>
+            <a href='armik_dotprod.svg'><img src='armik_dotprod.png' alt='Representation of the dot product on a robot arm' /></a>
+            <figcaption>Figure 1: Representation of the dot product on a robot arm</figcaption>
+        </figure>
+        However, as <em>cos(x)</em> is a periodic even function, the direction of rotation can not be determined
+        from the dot product. Therefore the vector cross product of the same two vectors is used. If the out-of-link-plane component is < 0, than the rotation calculated should be reversed.
+        This process is repeated until the error is sufficiently small, or a pre-set number of iterations is fulfilled.
+        </p>
+        <h3>Code Snippet</h3>
+        <p>The CCD algorithm is implemented below. A full example is located further below.</p>
+        <xmp>def ccd(self, pos, iterLimit = 200, errorLimit=20, thetaStep=None):Uses the Cyclic Coordinate Descent method for ik
+            
+            Translated from https://sites.google.com/site/auraliusproject/ccd-algorithm        
+            
+            goal = self.tupToArr(pos)
+            goal = self.flipY(goal)
+            coords = self.sectionsGlobalPos()
+            errorLimit = errorLimit**2
+            error = self.distSquare(coords[-1][0], goal)
+            count = 0
+            while error > errorLimit:
+                for linkNo in range(len(self.sections))[::-1]: #reverse order for ccd
+                    pe = coords[-1][1] #end effector end location
+                    pc = coords[linkNo][0]  
+                    
+                    a = (pe-pc)/self.dist(pe, pc)
+                    
+                    b = (goal-pc)/self.dist(goal,pc)
+                    
+                    cosTeta = numpy.dot(a.T[0], b.T[0])
+                    #because of probably numerical errors, limit to +- 1
+                    cosTeta = self.basicLimit(cosTeta, 1)
+                    teta = math.acos(cosTeta)
+                    if thetaStep:
+                        teta = self.basicLimit(teta, thetaStep)
+                    
+                    dirVector = numpy.cross(a.T[0], b.T[0])
+                    
+                    #need to check what plane the link is about, because 3D
+                    #planeNorm = numpy.cross(                
+                    
+                    #check if ccw or cw, as cos is an even function, and doesn't give ccw or cw
+                    if dirVector[2] <0:
+                        teta *= -1
+                    
+                    #update the current links angle
+                    self.sections[linkNo]["theta"] += teta
+                    self.sections[linkNo]["theta"] = self.resetTheta(self.sections[linkNo]["theta"])
+                    up = self.sections[linkNo]["up"]
+                    low = self.sections[linkNo]["low"]
+                    self.sections[linkNo]["theta"] = self.twoSideLim(self.sections[linkNo]["theta"], up, low)
+                    #update all the links position
+                    coords = self.sectionsGlobalPos()
+                    
+                error = self.distSquare(coords[-1][0], goal)
+                count += 1
+                
+                #we want to bail out if we're not reaching it very quickly
+                if count > iterLimit:
+                    error = 0
+            self.drawArm()
+        </xmp>
+        <a href="ik.py"><b>Download</b> the entire pygame example here</a>
+        <h3>References</h3>
+        <ul>
+            <li>https://sites.google.com/site/auraliusproject/ccd-algorithm</li>
+            <li>http://www.ryanjuckett.com/programming/cyclic-coordinate-descent-in-2d/</li>
+        </ul>
+    <h2>Jacobian Transpose</h2>
+        <p>
+            Included in same download file: not yet written up
+        </p>
+        <h3>Code Snippet</h3>
+        <p>BLARGH</p>
+        <h3>References</h3>
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    <h2>Jacobian Psuedo-Inverse</h2>
+        <p>
+            Included in same download file: not yet written up
+        </p>
+        <h3>Code Snippet</h3>
+        <p>BLARGH LJ</p>
+        <h3>References</h3>
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    <h2>Requirements</h2>
+        <ul>
+            <li>Python 2.7x</li>
+            <li>Pygame</li>
+            <li>NumPy</li>
+        </ul>
+    <h2>Notes</h2>
+        <ul>
+            <li>Each arm segment, in <code>self.sections</code>, has location/angle relative to the previous arm section. <code>self.sectionsGlobalPos()</code> translates this to the global coordinates neccessary for the inverse kinematics and rendering. The major advantage of storing the information in this way is that it easily translates to a real world robot arm.</li>
+            <li>Theta is in radians.</li>
+            <li>Position data is stored in a 3x1 numpy array.</li>
+            <li>Very little work should be needed to convert to a true 3D IK system</li>
+        </ul>
+            
+
+		</div>
+		
+		<div id="secondarycontent">
+
+			<!-- secondary content start -->
+		
+			<!--<h3>About Me</h3>
+			<div class="content">
+				<img src="images/pic2.jpg" class="picB" alt="" />
+				<p><strong>Nullam turpis</strong> vestibulum et sed dolore. Nulla facilisi. Sed tortor. lobortis commodo. <a href="#">More ...</a></p>
+			</div>
+			-->
+			
+			<h3>Topics</h3>
+			<div class="content">
+				<ul class="linklist">
+				<a href="armik.html">Armik</a><br />
+
+				<a href="..\..\index.html">Index</a><br />
+<a href="..\..\blender.html">Blender</a><br />
+<a href="..\..\thinking.html">Thinking</a><br />
+<a href="..\..\thinking2.html">Thinking2</a><br />
+<a href="..\..\quickWorks.html">Quickworks</a><br />
+<a href="..\..\blairfoil.html">Blairfoil</a><br />
+<a href="..\..\casio.html">Casio</a><br />
+<a href="..\..\electronics.html">Electronics</a><br />
+<a href="..\..\3dprinter.html">3dprinter</a><br />
+<a href="..\..\bike_timer.html">Bike_timer</a><br />
+<a href="..\..\conky.html">Conky</a><br />
+<a href="..\..\linux.html">Linux</a><br />
+<a href="..\..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\..\nerf.html">Nerf</a><br />
+<a href="..\..\homemades.html">Homemades</a><br />
+<a href="..\..\mods.html">Mods</a><br />
+<a href="..\..\otherstuff.html">Otherstuff</a><br />
+<a href="..\..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\..\jgui.html">Jgui</a><br />
+<a href="..\..\python.html">Python</a><br />
+<a href="..\..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\..\lapTimer.html">Laptimer</a><br />
+<a href="..\..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\..\jlogger.html">Jlogger</a><br />
+<a href="..\..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\..\armik.html">Armik</a><br />
+<a href="..\..\life.html">Life</a><br />
+<a href="..\..\main.html">Main</a><br />
+<a href="..\..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\..\wr.html">Wr</a><br />
+<a href="..\..\wradvanced.html">Wradvanced</a><br />
+<a href="..\..\wrguidance.html">Wrguidance</a><br />
+<a href="..\..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\..\wrutc.html">Wrutc</a><br />
+<a href="..\..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\..\wrsafety.html">Wrsafety</a><br />
+<a href="..\..\index.html">Index</a><br />
+<a href="..\..\blender.html">Blender</a><br />
+<a href="..\..\thinking.html">Thinking</a><br />
+<a href="..\..\thinking2.html">Thinking2</a><br />
+<a href="..\..\quickWorks.html">Quickworks</a><br />
+<a href="..\..\blairfoil.html">Blairfoil</a><br />
+<a href="..\..\casio.html">Casio</a><br />
+<a href="..\..\electronics.html">Electronics</a><br />
+<a href="..\..\3dprinter.html">3dprinter</a><br />
+<a href="..\..\bike_timer.html">Bike_timer</a><br />
+<a href="..\..\conky.html">Conky</a><br />
+<a href="..\..\linux.html">Linux</a><br />
+<a href="..\..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\..\nerf.html">Nerf</a><br />
+<a href="..\..\homemades.html">Homemades</a><br />
+<a href="..\..\mods.html">Mods</a><br />
+<a href="..\..\otherstuff.html">Otherstuff</a><br />
+<a href="..\..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\..\jgui.html">Jgui</a><br />
+<a href="..\..\python.html">Python</a><br />
+<a href="..\..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\..\lapTimer.html">Laptimer</a><br />
+<a href="..\..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\..\jlogger.html">Jlogger</a><br />
+<a href="..\..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\..\armik.html">Armik</a><br />
+<a href="..\..\life.html">Life</a><br />
+<a href="..\..\main.html">Main</a><br />
+<a href="..\..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\..\wr.html">Wr</a><br />
+<a href="..\..\wradvanced.html">Wradvanced</a><br />
+<a href="..\..\wrguidance.html">Wrguidance</a><br />
+<a href="..\..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\..\wrutc.html">Wrutc</a><br />
+<a href="..\..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\..\wrsafety.html">Wrsafety</a><br />
+
+				</ul>
+			</div>
+
+			<!-- secondary content end -->
+
+		</div>
+	
+		<div id="footer">
+		
+			&copy; All works licensed under the GPL general public license v3, unless otherwise noted. Content may include works based upon public domain content. Design based on <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a> + <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>
+		
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>
+

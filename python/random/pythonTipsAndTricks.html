@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+BASED ON: Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+Name       : TerraFirma
+Version    : 1.0
+Released   : 20080425
+-->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<title>
+Python Tips and Tricks
+</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.users.sourceforge.net/css/default.css" />
+<link rel="stylesheet" href="../../css/pygments_style.css">
+<!--Start annoying javascript -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33695524-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+    <!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/userapps/piwik/jak-o-shadows/" : "http://sourceforge.net/userapps/piwik/jak-o-shadows/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/userapps/piwik/jak-o-shadows/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+
+<!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'http://laptimer.sourceforge.net/owa/owa/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', '515165129f3acb5810e6878e3db05477']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+owa_cmds.push(['trackDomStream']);
+
+(function() {
+	var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+	owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+	_owa.src = owa_baseUrl + 'modules/base/js/owa.tracker-combined-min.js';
+	var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+<!-- stop annoying javascript-->
+
+</head>
+<body>
+
+<div id="outer">
+
+	<div id="upbg"></div>
+
+	<div id="inner">
+
+		<div id="header">
+			<h1><a href="http://jak-o-shadows.users.sourceforge.net"><span>Jak_o_Shadows</span>Web</a></h1>
+			<!--<h2>by nodethirtythree + fct</h2>-->
+		</div>
+	
+		<div id="splash"></div>
+	
+		<div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.users.sourceforge.net/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.users.sourceforge.net/nerf/nerf.html">Nerf</a></li>
+                        <li><a href="http://jak-o-shadows.users.sourceforge.net/linux/linux.html">Linux</a></li>
+			</ul>
+
+		<div id="date">2015-03-01 21:06</div>
+		</div>
+	
+
+		<div id="primarycontent">
+			
+<h1>Pausing Pygame</h1>
+<p>Sometimes when developing games, what you see on the screen happens too fast for you to make sense of it. You can try print statements, or you can take the time to learn an external debugger, which would probably be overkill for what you want it to do <em>right now</em>. One solution i've found when writing games for pygame is to just not let the main <em>while</em> loop finish until you're ready. To that end, I did this:
+</p>
+<p>
+<div class="hlcode">
+<div class="highlight"><pre>    <span class="n">keepGoing</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">while</span> <span class="n">keepGoing</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
+                <span class="n">keepGoing</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">NextFrame</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">NextFrame</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
+                    <span class="n">keepGoing</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                    <span class="n">NextFrame</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div></div></div></div>
+</p>
+<p>
+This code allows no further input when it is running. Since you're waiting on this to finish, this means that you have literally no input. Also, it isn't possible to go backward. A keypress on any key will let it move onto the next frame. To use, just add the last while loop to the end of your main loop, as shown
+</p>
+<div><p><h1>Storing a timedelta in a sqlite3 database</h1></p>
+<p>I found myself needing to store a datetime.timedelta object in a sqlite3 database. However, despite having adaptors for datetime.datetime objects, timedelta misses out. Through googling/irc, i found that it would be best to store the timedelta as a string. An alternative is to store the start and end times of the timedelta as datetime.datetime objects (which can be stored easily), however I chose not to.</p>
+<p>The Code</p>
+<div class="hlcode">
+<div class="syntax"><pre><span class="k">def</span> <span class="nf">convertTime</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts a timedelta to a string. ignores days and annoying decimal places</span>
+<span class="sd">    compatible with strToTD</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">st</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span>
+    
+<span class="k">def</span> <span class="nf">strToTD</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;converts a string that was a timedelta (having been converted using</span>
+<span class="sd">    convertTime) back into a timedelta</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)]</span>
+    <span class="n">ms</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">sec</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">ms</span><span class="o">/</span><span class="mf">100.0</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">td</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span> <span class="o">=</span> <span class="n">h</span><span class="p">,</span> <span class="n">minutes</span> <span class="o">=</span> <span class="n">m</span><span class="p">,</span> <span class="n">seconds</span> <span class="o">=</span> <span class="n">sec</span><span class="p">)</span><span class="c">#, microseconds = us)</span>
+    <span class="k">return</span> <span class="n">td</span>
+</pre></div>
+
+</div>
+<p>While this is only good for up house:minute:seconds:micro/milli-seconds, it is an alternative to storing the start and end times</p>
+
+
+		</div>
+		
+		<div id="secondarycontent">
+
+			<!-- secondary content start -->
+		
+			<!--<h3>About Me</h3>
+			<div class="content">
+				<img src="images/pic2.jpg" class="picB" alt="" />
+				<p><strong>Nullam turpis</strong> vestibulum et sed dolore. Nulla facilisi. Sed tortor. lobortis commodo. <a href="#">More ...</a></p>
+			</div>
+			-->
+			
+			<h3>Topics</h3>
+			<div class="content">
+				<ul class="linklist">
+				<a href="mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+
+				<a href="..\..\index.html">Index</a><br />
+<a href="..\..\blender.html">Blender</a><br />
+<a href="..\..\thinking.html">Thinking</a><br />
+<a href="..\..\thinking2.html">Thinking2</a><br />
+<a href="..\..\quickWorks.html">Quickworks</a><br />
+<a href="..\..\blairfoil.html">Blairfoil</a><br />
+<a href="..\..\casio.html">Casio</a><br />
+<a href="..\..\electronics.html">Electronics</a><br />
+<a href="..\..\3dprinter.html">3dprinter</a><br />
+<a href="..\..\bike_timer.html">Bike_timer</a><br />
+<a href="..\..\conky.html">Conky</a><br />
+<a href="..\..\linux.html">Linux</a><br />
+<a href="..\..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\..\nerf.html">Nerf</a><br />
+<a href="..\..\homemades.html">Homemades</a><br />
+<a href="..\..\mods.html">Mods</a><br />
+<a href="..\..\otherstuff.html">Otherstuff</a><br />
+<a href="..\..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\..\jgui.html">Jgui</a><br />
+<a href="..\..\python.html">Python</a><br />
+<a href="..\..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\..\lapTimer.html">Laptimer</a><br />
+<a href="..\..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\..\jlogger.html">Jlogger</a><br />
+<a href="..\..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\..\armik.html">Armik</a><br />
+<a href="..\..\life.html">Life</a><br />
+<a href="..\..\main.html">Main</a><br />
+<a href="..\..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\..\wr.html">Wr</a><br />
+<a href="..\..\wradvanced.html">Wradvanced</a><br />
+<a href="..\..\wrguidance.html">Wrguidance</a><br />
+<a href="..\..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\..\wrutc.html">Wrutc</a><br />
+<a href="..\..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\..\wrsafety.html">Wrsafety</a><br />
+<a href="..\..\index.html">Index</a><br />
+<a href="..\..\blender.html">Blender</a><br />
+<a href="..\..\thinking.html">Thinking</a><br />
+<a href="..\..\thinking2.html">Thinking2</a><br />
+<a href="..\..\quickWorks.html">Quickworks</a><br />
+<a href="..\..\blairfoil.html">Blairfoil</a><br />
+<a href="..\..\casio.html">Casio</a><br />
+<a href="..\..\electronics.html">Electronics</a><br />
+<a href="..\..\3dprinter.html">3dprinter</a><br />
+<a href="..\..\bike_timer.html">Bike_timer</a><br />
+<a href="..\..\conky.html">Conky</a><br />
+<a href="..\..\linux.html">Linux</a><br />
+<a href="..\..\iMapMaker.html">Imapmaker</a><br />
+<a href="..\..\nerf.html">Nerf</a><br />
+<a href="..\..\homemades.html">Homemades</a><br />
+<a href="..\..\mods.html">Mods</a><br />
+<a href="..\..\otherstuff.html">Otherstuff</a><br />
+<a href="..\..\buzzCostume.html">Buzzcostume</a><br />
+<a href="..\..\jgui.html">Jgui</a><br />
+<a href="..\..\python.html">Python</a><br />
+<a href="..\..\cgi-chat.html">Cgi-chat</a><br />
+<a href="..\..\lapTimer.html">Laptimer</a><br />
+<a href="..\..\mezzaninecentos.html">Mezzaninecentos</a><br />
+<a href="..\..\pythonTipsAndTricks.html">Pythontipsandtricks</a><br />
+<a href="..\..\jlogger.html">Jlogger</a><br />
+<a href="..\..\rndmNameGen.html">Rndmnamegen</a><br />
+<a href="..\..\armik.html">Armik</a><br />
+<a href="..\..\life.html">Life</a><br />
+<a href="..\..\main.html">Main</a><br />
+<a href="..\..\dblistctrl.html">Dblistctrl</a><br />
+<a href="..\..\wr.html">Wr</a><br />
+<a href="..\..\wradvanced.html">Wradvanced</a><br />
+<a href="..\..\wrguidance.html">Wrguidance</a><br />
+<a href="..\..\wrlaunchers.html">Wrlaunchers</a><br />
+<a href="..\..\wrnozzle.html">Wrnozzle</a><br />
+<a href="..\..\wrutc.html">Wrutc</a><br />
+<a href="..\..\wrrecovery.html">Wrrecovery</a><br />
+<a href="..\..\wrsafety.html">Wrsafety</a><br />
+
+				</ul>
+			</div>
+
+			<!-- secondary content end -->
+
+		</div>
+	
+		<div id="footer">
+		
+			&copy; All works licensed under the GPL general public license v3, unless otherwise noted. Content may include works based upon public domain content. Design based on <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a> + <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>
+		
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>
+
