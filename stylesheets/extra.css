@@ -1,0 +1,43 @@
+#menu
+{
+position: relative;
+/*width: 540px;*/
+/*background: #46461F url('http://jak-o-shadows.users.sourceforge.net/images/a16.gif') repeat-x;*/
+height: 67px;
+padding: 0px 20px 0px 5px; 
+/*margin: 0 auto 0 auto;*/
+/*margin: 98px 0px 20px 0px;*/
+}
+
+#menu ul
+{
+}
+
+#menu ul li
+{
+display: inline;
+line-height: 52px;
+padding-left: 3px;
+}
+
+#menu ul li.first
+{
+border-left: 0px;
+}
+
+#menu ul li a
+{
+background-color: transparent;
+background-repeat: repeat-x;
+padding: 8px 12px 8px 12px;
+font-size: 12px;
+color: #fff;
+font-weight: bold;
+}
+
+#menu ul li a:hover
+{
+background: #fff url('http://jak-o-shadows.users.sourceforge.net/images/a18.gif') repeat-x top;
+color: #4A4A24;
+text-decoration: none;
+}
