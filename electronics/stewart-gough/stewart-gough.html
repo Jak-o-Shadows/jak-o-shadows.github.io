@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/pygment_trac.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/extra.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/print.css" media="print" />
+	<style type="text/css">
+   li {
+     line-height: 40px;
+   }
+</style>
+<!--video embedding nicer - Thanks http://fettblog.eu/blog/2013/06/16/preserving-aspect-ratio-for-embedded-iframes/ -->
+<style type="text/css">
+    .aspect-ratio {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%;
+    }
+    
+    .aspect-ratio iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0; top: 0;    
+    }
+</style>
+
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Stewart-Gough Platform - Forward & Inverse Kinematics -- Jak-o-Shadows</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1><a href="http://jak-o-shadows.github.io/index.html">Jak_o_Shadows Web</a></h1>
+        <h2>I really need a tagline</h2>
+        <!--<a href="https://github.com/jasonlong/architect-theme" class="button"><small>View project on</small> GitHub</a>-->
+		  <div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.github.io/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.github.io/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.github.io/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.github.io/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.github.io/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.github.io/nerf/nerf.html">Nerf</a></li>
+                <li><a href="http://jak-o-shadows.github.io/linux/linux.html">Linux</a></li>
+			</ul>
+		</div>
+		
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+        
+      <h0>WORK IN PROGRESS - NOT ALL DIAGRAMS COMPLETED, ETC</h0>
+	<h1>Kinematics</h1>
+		<p>
+        		The forward and inverse kinematics of a Stewart-Gough platform are derived, and code created (available to download).
+        		<h2>Derivation</h2>
+        		<p>
+        			The forward and inverse kinematics of a stewart-gough platform are described, with explicit mention of coordinate systems and sign conventions.
+        			<br />
+        			<a href="kinematics-stewart-gough-platform.pdf">Derivation</a>
+        		</p>
+        
+        		<h2>Code Overview</h2>
+        		<p>
+        			<h3>configuration.py <a href="configuration.py">[Download]</a></h3>
+        			<p>
+        				This file defines the position of the sensors/actuators on the base and platform. Note that the attachment points of the platform/base are with respect to the platform/base coordinate system respectively. Also defined is the resting distance between the platform and base, as well as actuator/sensor length constraints, and attachment point angular constraints
+        			</p>
+        			<h3>fk.py <a href="fk.py">[Download]</a></h3>
+        			<p>
+        				Does the forward and inverse kinematics. Requires Numpy, because matrix math is extensively used. Has the function <em>ik(bPos, pPos, a, sqrt=True)</em> for inverse kinematics - finding sensor/actuator lengths for a given platform position. Has the function <em>fk(bPos, pPos, L)</em> which finds the platform position/orientation for the given sensor/actuator lengths L.
+        			</p>
+        		</p>
+		</p>
+	<h1>Blender Simulator</h1>
+	<p>
+		To visualise the motion of the platform, instead of graphs, a 3D interface is used. This is based on <a href="http://www.blender.org">Blender</a> a free 3D modelling program. Utilising the Blender Game Engine (BGE), the position/orientation of the platform is updated, with actuators/sensors automatically updating due to rigid body constraints.
+          <br />
+          <div class="aspect-ratio"><iframe width="100%" src="https://www.youtube.com/embed/uNKHX5B011E" frameborder="0" allowfullscreen></iframe></div>
+          <br />
+  
+            <h2>Brief Instructions</h2>
+            <p>Brief because Blender has quite a learning curve in itself.
+                <ul>
+                <li>Download Blender. Delete the starting cube.
+                <li>In Blender's text editor, open the scripts listed below in <em>Blender Scripts</em>.
+                <li>Also open <em>configuration.py</em> in Blender.
+                <li>Run <em>makeObjects.py</em> in Blender.
+                <li>Setup this logic on the platform. <br /> <a href="logic.png"><img src="logic.png" alt="Logic blocks that call the scripts mentioned below" title="Click for larger" width=100% /></a>
+                </ul>
+            </p>
+            
+  
+		<h2>Scripts</h2>
+		<p>
+			<h3>conn.py <a href="conn.py">[Download]</a></h3>
+			<p>
+				Helper library for threaded sockets. Puts both to-send and recieved messages into FIFO queues to be dealt with later. Python 2/3 compatible.
+			</p>
+			<h3>simAngles.py <a href="simAngles.py">[Download]</a></h3>
+			<p>
+				Generates a csv of test positions for the platform. Independently sweeps each variable between a max and minimum range.
+			</p>
+			<h3>sendSimAngles.py <a href="sendSimAngles.py">[Download]</a></h3>
+			<p>
+				Sends the csv of test positions generated by <em>simAngles.py</em> to Blender for visualisation. Loops back to start.
+			</p>
+			<h3>msgpass.py <a href="msgpass.py">[Download]</a></h3>
+			<p>
+				Connects to a serial port & reads in sensor values - will send platform position information to blender for visualisation. Will use the forward kinematics of <em>fk.py</em> to generate platform position/orientation from sensor lengths.
+				UNFINISHED.
+			</p>
+		</p>
+		
+		<h2>Blender Scripts</h2>
+		<p>
+			Note that some manual changes are required in Blender before visualisation can occur. These scripts do not do everything.
+			<h3>makeObjects.py <a href="makeObjects.py">[Download]</a></h3>
+			<p>
+				Using <em>configuration.py</em> from above, makes simple geometry to use in the visualisation. Requires minor work after (mostly rescaling) before use
+			</p>
+			<h3>createJoints.py <a href="createJoints.py">[Download]</a></h3>
+			<p>
+				Creates the rigid body joints required for the sensor/actuators to behave. (Required <em>makeObjects.py></em> to have been run in the past).
+			</p>
+			<h3>recieveAngles.py <a href="recieveAngles.py">[Download]</a></h3>
+			<p>
+				Using a TCP socket (and <em>conn.py</em>), recieves platform position/orientation data and applies it to the platform generated by <em>makeObjects.py</em>
+			</p>
+			<h3>getLegLength.py <a href="getLegLength.py">[Download]</a></h3>
+			<p>
+				Gets the length of each actuator/sensor as it appears in Blender. Useful for checking if extension limits are being adhered to, or for checking that the forward kinematics is working.
+			</p>
+	</p>
+
+		<!---
+        <div class="highlight">
+		<pre><span class="nb">require</span> <span class="s1">'redcarpet'</span>
+<span class="n">markdown</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"Hello World!"</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">markdown</span><span class="o">.</span><span class="n">to_html</span></pre>
+        </div>---->
+
+		</section>
+        <aside id="sidebar">
+		<p></p>
+		<p></p>
+		<!--
+          <a href="https://github.com/jasonlong/architect-theme/archive/master.zip" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jasonlong/architect-theme/archive/master.tar.gz" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>-->
+
+          <p class="repo-owner"><a href="https://github.com/jasonlong/architect-theme">architect-theme</a> is maintained by <a href="https://github.com/jasonlong">jasonlong</a>. Modified by Jak_o_Shadows</p>
+
+          <!--<p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>-->
+		  <p>This page was last modified: 2015-12-28 06:06</p>
+        </aside>
+      </div>
+    </div>
+
+  </body>
+</html>
+
