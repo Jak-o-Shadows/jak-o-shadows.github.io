@@ -1,0 +1,26 @@
+
+
+#body {
+background-image:url('background.png');
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position: center;
+background-origin:padding-box;
+padding-right: 15%;
+
+margin: 20px;
+
+}
+
+#contentBox {
+    margin: 0 auto;
+    width: 100%;
+	height: 50%;
+}
+
+#contentBox .column {
+    float: left;
+    margin: 0;
+    width: 20%;
+}
+

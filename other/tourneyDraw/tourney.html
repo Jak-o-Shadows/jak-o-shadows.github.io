@@ -1,0 +1,180 @@
+<html>
+	<head>
+		<title>Tournament</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		
+		<!--<script src="jquery-1.11.0.min.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script type="text/javascript">
+		wildcards = ["", "", "", "", "", "", "", ""];
+		
+		wildRound = 0; //0 for first wildcard, 1 for second
+		
+		function clear(){
+			//clear the completed rounds
+			for (i=11; i<=23; i++){
+				$("#"+i).val("");
+			}
+			//clear wildcard entries
+			for (i=0;i<8;i++){
+				$("#w"+i).val("");
+				wildcards[i] = ""
+			}
+		
+		}
+		
+		function shuffleArray() {
+		//implements the fisher-yates algorithm for in-place shuffling
+			for (i=10;i>1;i--) {
+				j = Math.floor(Math.random() * (i)) + 1
+				var temp = $("#" + i).val();
+				$("#" + i).val($("#" + j).val());
+				$("#" + j).val(temp);
+			}
+		
+		}
+		
+		function showWildcards(){
+			for (i=0;i<8;i++){
+				$("#w"+i).val(wildcards[i]);
+			}
+		
+		}
+		
+		function doWildcard(windex) {
+			if (!wildRound){
+				ind = 16;
+				wildRound = 1
+			}
+			else {
+				ind = 20;
+				wildRound = 0;
+			}
+			wild = $("#w" + windex).val();
+			wildcards[windex] = "";
+			$("#" + ind).val(wild);
+		}
+		
+		
+		function next(index){
+			if (index == -1){
+				clear(); //holy hell i hate javascript. putting clear onclick was not working
+				return 0;
+			}
+			else if (index[0] == "w"){
+				//i cannot make the buttons call any other function
+				windex = parseInt(index[1]);
+				doWildcard(windex);
+				return 0;
+			}
+			else if (index[0] == "u") {
+				//update wildcards
+				showWildcards();
+			}
+			else{
+				winner = $("#" + index).val();
+				
+				//put the loser into the wildcards draw
+				loserIndex = index -1 + 2*Math.ceil(index%2);
+				loser = $("#" + loserIndex).val();
+				
+				
+				if (index <=10){
+					nextIndex = 10 + Math.ceil(index/2.0);
+				}
+				else if (index<=16 && index >10){
+					nextIndex = 11 + Math.ceil(index/2.0);
+				}
+				else if (index <=20 && index>16){
+					nextIndex = 12 + Math.ceil(index/2.0);
+				}
+				else{
+					nextIndex = 23;
+				}
+				
+				if (index<=16) {
+					//wildcards get added to:
+					wildCardIndex = Math.ceil(index/2.0) - 1;
+					wildcards[wildCardIndex] = loser;
+				}
+
+				$("#" + nextIndex).val(winner);
+				showWildcards();
+			}
+		}
+		</script>
+	</head>
+	<body>
+	<div id="body">
+		<div id="contentBox">
+		<form name="test">
+			<p><!--HELP TEXT--><br />
+			<input type="button" value="Clear Results" onclick="next(-1)">
+			<input type="button" value="Randomise Draw" onclick="shuffleArray()">
+			<div class="column">
+			<input type="text" id="1"><input type="button" value="&#10004;" onclick="next(1)"><br />
+			<input type="text" id="2"><input type="button" onclick="next(2)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="3"><input type="button" onclick="next(3)" value="&#10004;"><br />
+			<input type="text" id="4"><input type="button" onclick="next(4)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="5"><input type="button" onclick="next(5)" value="&#10004;"><br />
+			<input type="text" id="6"><input type="button" onclick="next(6)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="7"><input type="button" onclick="next(7)" value="&#10004;"><br />
+			<input type="text" id="8"><input type="button" onclick="next(8)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="9"><input type="button" onclick="next(9)" value="&#10004;"><br />
+			<input type="text" id="10"><input type="button" onclick="next(10)" value="&#10004;"><br />
+			</div>
+			
+			<div class="column">
+			<input type="text" id="11"><input type="button" onclick="next(11)" value="&#10004;"><br />
+			<input type="text" id="12"><input type="button" onclick="next(12)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="13"><input type="button" onclick="next(13)" value="&#10004;"><br />
+			<input type="text" id="14"><input type="button" onclick="next(14)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="15"><input type="button" onclick="next(15)" value="&#10004;"><br />
+			<input type="text" id="16"><input type="button" onclick="next(16)" value="&#10004;"><br />
+			<br />
+			</div>
+			
+			<div class="column">
+			<input type="text" id="17"><input type="button" onclick="next(17)" value="&#10004;"><br />
+			<input type="text" id="18"><input type="button" onclick="next(18)" value="&#10004;"><br />
+			<br />
+			<input type="text" id="19"><input type="button" onclick="next(19)" value="&#10004;"><br />
+			<input type="text" id="20"><input type="button" onclick="next(20)" value="&#10004;"><br />
+			</div>
+			
+			<div class="column">
+			<input type="text" id="21"><input type="button" onclick="next(21)" value="&#10004;"><br />
+			<input type="text" id="22"><input type="button" onclick="next(22)" value="&#10004;"><br />
+			</div>
+			
+			<div class="column">
+			<input type="text" id="23"><br />
+			</div>
+		</form>
+		</div>
+		
+		<div id="wildcards">
+			<form name = "wildcards">
+			Wildcards
+			<br />
+			<!--<input type="button" value="Show Wildcards" onclick="next('u')"><br />-->
+			<input type="text" id="w0"><input type="button" onclick="next('w0')" value="&#10004;"><br />
+			<input type="text" id="w1"><input type="button" onclick="next('w1')" value="&#10004;"><br />
+			<input type="text" id="w2"><input type="button" onclick="next('w2')" value="&#10004;"><br />
+			<input type="text" id="w3"><input type="button" onclick="next('w3')" value="&#10004;"><br />
+			<input type="text" id="w4"><input type="button" onclick="next('w4')" value="&#10004;"><br />
+			<input type="text" id="w5"><input type="button" onclick="next('w5')" value="&#10004;"><br />
+			<input type="text" id="w6"><input type="button" onclick="next('w6')" value="&#10004;"><br />
+			<input type="text" id="w7"><input type="button" onclick="next('w7')" value="&#10004;"><br />
+		</div>
+	</div>
+		
+		
+	</body>
+</html>
