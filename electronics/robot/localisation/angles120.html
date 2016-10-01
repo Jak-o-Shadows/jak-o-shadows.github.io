@@ -1,0 +1,388 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>angles120</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-10-01"><meta name="DC.source" content="angles120.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%Angles</span>
+<span class="comment">%Jak-o-Shadows</span>
+<span class="comment">%1-10-2016</span>
+
+<span class="comment">%Use this to find the 3 angles of a set that are the most evenly spread.</span>
+<span class="comment">%Thanks to rue_mohr and others in #robotics on irc.freenode.net</span>
+
+
+close <span class="string">all</span>
+clear <span class="string">all</span>
+clc
+
+angleSets = {[70, 350, 90, 340, 322], <span class="keyword">...</span>
+             [40.000000, 31.000000, 109.000000, 347.000000, 30.000000, 114.000000, 36.000000, 41.000000], <span class="keyword">...</span>
+             [126.000000, 244.000000, 311.000000, 232.000000, 262.000000, 277.000000, 169.000000, 343.000000], <span class="keyword">...</span>
+             [298.0, 17.0, 235.0, 207.0, 253.0, 90.0, 210.0, 330.0]};
+
+fprintf(<span class="string">'Remember, Matlab starts counting at 1!!!!!!!!!!!\n'</span>);
+
+<span class="keyword">for</span> angSetNum=1:length(angleSets)
+    angles = angleSets{angSetNum}
+
+    desired = 360/3;
+    objFcn = @(x, y, z) (abs(x-desired)+abs(y-desired) + abs(z-desired))/3;
+    objFcn = @(x, y, z) ((x-desired)^4 + (y-desired)^4 + (z-desired)^4); <span class="comment">%penalises gaps more</span>
+
+    n = length(angles);
+    best = NaN(1, 3);
+    bestScore = inf;
+    <span class="keyword">for</span> dj = 1:n-2
+        <span class="keyword">for</span> dk=1:n-dj
+            <span class="keyword">for</span> i=1:n-dj-dk
+                j = i+dj;
+                k = j+dk;
+                <span class="comment">%fprintf('Comb = %d, %d %d \n', i, j, k);</span>
+
+                a = angles(i);
+                b = angles(j);
+                c = angles(k);
+                <span class="comment">%fprintf('\t %0.2f, %0.2f, %0.2f \n', a, b, c);</span>
+
+
+                <span class="comment">%Find distances, after moving angles to +- 180 degrees</span>
+                aa = a;
+                bb = b;
+                cc = c;
+                <span class="keyword">if</span> (aa &gt; 180)
+                    aa = aa - 360;
+                <span class="keyword">end</span>
+                <span class="keyword">if</span> (bb &gt; 180)
+                    bb = bb - 360;
+                <span class="keyword">end</span>
+                <span class="keyword">if</span> (cc &gt; 180)
+                    cc = cc - 360;
+                <span class="keyword">end</span>
+
+                <span class="comment">%Check if we've worked out the bigger or smaller angle.</span>
+                d1 = abs(bb - aa);
+                <span class="keyword">if</span> (d1 &gt; 180)
+                    d1 = 360-d1;
+                <span class="keyword">end</span>
+                d2 = abs(bb - cc);
+                <span class="keyword">if</span> (d2 &gt; 180)
+                    d2 = 360-d2;
+                <span class="keyword">end</span>
+                d3 = abs(aa - cc);
+                <span class="keyword">if</span> (d3 &gt; 180)
+                    d3 = 360-d3;
+                <span class="keyword">end</span>
+
+                score = objFcn(d1,d2,d3);
+                <span class="comment">%fprintf('\t %0.2f, %0.2f, %0.2f, score=%0.2f\n', d1, d2, d3, score);</span>
+                <span class="keyword">if</span> (score &lt; bestScore)
+                    bestScore = score;
+                    best = [i, j, k];
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    selected = angles(best);
+    fprintf(<span class="string">'-----------------------\n'</span>)
+    fprintf(<span class="string">'Best was %d, %d, %d \n'</span>, best(1), best(2), best(3));
+    fprintf(<span class="string">'\t %0.2f, %0.2f, %0.2f\n'</span>, selected(1), selected(2), selected(3));
+    fprintf(<span class="string">'\t with score = %0.2f\n'</span>, bestScore);
+
+
+    aa = selected(1);
+    bb = selected(2);
+    cc = selected(3);
+    <span class="keyword">if</span> (aa &gt; 180)
+        aa = aa - 360;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> (bb &gt; 180)
+        bb = bb - 360;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> (cc &gt; 180)
+        cc = cc - 360;
+    <span class="keyword">end</span>
+
+    <span class="comment">%Check if we've worked out the bigger or smaller angle.</span>
+    d1 = abs(bb - aa);
+    <span class="keyword">if</span> (d1 &gt; 180)
+        d1 = 360-d1;
+    <span class="keyword">end</span>
+    d2 = abs(bb - cc);
+    <span class="keyword">if</span> (d2 &gt; 180)
+        d2 = 360-d2;
+    <span class="keyword">end</span>
+    d3 = abs(aa - cc);
+    <span class="keyword">if</span> (d3 &gt; 180)
+        d3 = 360-d3;
+    <span class="keyword">end</span>
+
+    score = objFcn(d1,d2,d3);
+    fprintf(<span class="string">'\t %0.2f, %0.2f, %0.2f, score=%0.2f\n'</span>, d1, d2, d3, score);
+
+
+
+    pointsX = cosd(angles);
+    pointsY = sind(angles);
+    figure();
+    hold <span class="string">on</span>;
+    plot(pointsX, pointsY, <span class="string">'X'</span>)
+    plot([-1, 1], [0, 0], <span class="string">'k-'</span>); <span class="comment">%x-axis</span>
+    plot([0, 0], [-1, 1], <span class="string">'k-'</span>); <span class="comment">%y-axis</span>
+    xlim([-1.1, 1.1]);
+    ylim([-1.1, 1.1]);
+    <span class="comment">%Circle the good points</span>
+    plot(pointsX(best), pointsY(best), <span class="string">'ro'</span>);
+    <span class="comment">%Draw the angles in</span>
+    <span class="keyword">for</span> i=1:3
+        plot([0, pointsX(best(i))], [0, pointsY(best(i))], <span class="string">'g-'</span>);
+    <span class="keyword">end</span>
+
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Remember, Matlab starts counting at 1!!!!!!!!!!!
+
+angles =
+
+    70   350    90   340   322
+
+-----------------------
+Best was 2, 3, 5 
+	 350.00, 90.00, 322.00
+	 with score = 71803392.00
+	 100.00, 128.00, 28.00, score=71803392.00
+
+angles =
+
+    40    31   109   347    30   114    36    41
+
+-----------------------
+Best was 4, 6, 8 
+	 347.00, 114.00, 41.00
+	 with score = 23856818.00
+	 127.00, 73.00, 54.00, score=23856818.00
+
+angles =
+
+   126   244   311   232   262   277   169   343
+
+-----------------------
+Best was 1, 4, 8 
+	 126.00, 232.00, 343.00
+	 with score = 324818.00
+	 106.00, 111.00, 143.00, score=324818.00
+
+angles =
+
+   298    17   235   207   253    90   210   330
+
+-----------------------
+Best was 6, 7, 8 
+	 90.00, 210.00, 330.00
+	 with score = 0.00
+	 120.00, 120.00, 120.00, score=0.00
+</pre><img vspace="5" hspace="5" src="angles120_01.png" alt=""> <img vspace="5" hspace="5" src="angles120_02.png" alt=""> <img vspace="5" hspace="5" src="angles120_03.png" alt=""> <img vspace="5" hspace="5" src="angles120_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%Angles
+%Jak-o-Shadows
+%1-10-2016
+
+%Use this to find the 3 angles of a set that are the most evenly spread.
+%Thanks to rue_mohr and others in #robotics on irc.freenode.net
+
+
+close all
+clear all
+clc
+
+angleSets = {[70, 350, 90, 340, 322], ...
+             [40.000000, 31.000000, 109.000000, 347.000000, 30.000000, 114.000000, 36.000000, 41.000000], ...
+             [126.000000, 244.000000, 311.000000, 232.000000, 262.000000, 277.000000, 169.000000, 343.000000], ...
+             [298.0, 17.0, 235.0, 207.0, 253.0, 90.0, 210.0, 330.0]};
+         
+fprintf('Remember, Matlab starts counting at 1!!!!!!!!!!!\n');
+
+for angSetNum=1:length(angleSets)
+    angles = angleSets{angSetNum}
+         
+    desired = 360/3;
+    objFcn = @(x, y, z) (abs(x-desired)+abs(y-desired) + abs(z-desired))/3;
+    objFcn = @(x, y, z) ((x-desired)^4 + (y-desired)^4 + (z-desired)^4); %penalises gaps more
+
+    n = length(angles);
+    best = NaN(1, 3);
+    bestScore = inf;
+    for dj = 1:n-2
+        for dk=1:n-dj
+            for i=1:n-dj-dk
+                j = i+dj;
+                k = j+dk;
+                %fprintf('Comb = %d, %d %d \n', i, j, k);
+
+                a = angles(i);
+                b = angles(j);
+                c = angles(k);
+                %fprintf('\t %0.2f, %0.2f, %0.2f \n', a, b, c);
+
+
+                %Find distances, after moving angles to +- 180 degrees
+                aa = a;
+                bb = b;
+                cc = c;
+                if (aa > 180)
+                    aa = aa - 360;
+                end
+                if (bb > 180)
+                    bb = bb - 360;
+                end
+                if (cc > 180)
+                    cc = cc - 360;
+                end
+
+                %Check if we've worked out the bigger or smaller angle.
+                d1 = abs(bb - aa);
+                if (d1 > 180)
+                    d1 = 360-d1;
+                end
+                d2 = abs(bb - cc);
+                if (d2 > 180)
+                    d2 = 360-d2;
+                end
+                d3 = abs(aa - cc);
+                if (d3 > 180)
+                    d3 = 360-d3;
+                end
+
+                score = objFcn(d1,d2,d3);
+                %fprintf('\t %0.2f, %0.2f, %0.2f, score=%0.2f\n', d1, d2, d3, score);
+                if (score < bestScore)
+                    bestScore = score;
+                    best = [i, j, k];
+                end
+            end
+        end
+    end
+
+    selected = angles(best);
+    fprintf('REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+    fprintf('Best was %d, %d, %d \n', best(1), best(2), best(3));
+    fprintf('\t %0.2f, %0.2f, %0.2f\n', selected(1), selected(2), selected(3));
+    fprintf('\t with score = %0.2f\n', bestScore);
+
+
+    aa = selected(1);
+    bb = selected(2);
+    cc = selected(3);
+    if (aa > 180)
+        aa = aa - 360;
+    end
+    if (bb > 180)
+        bb = bb - 360;
+    end
+    if (cc > 180)
+        cc = cc - 360;
+    end
+
+    %Check if we've worked out the bigger or smaller angle.
+    d1 = abs(bb - aa);
+    if (d1 > 180)
+        d1 = 360-d1;
+    end
+    d2 = abs(bb - cc);
+    if (d2 > 180)
+        d2 = 360-d2;
+    end
+    d3 = abs(aa - cc);
+    if (d3 > 180)
+        d3 = 360-d3;
+    end
+
+    score = objFcn(d1,d2,d3);
+    fprintf('\t %0.2f, %0.2f, %0.2f, score=%0.2f\n', d1, d2, d3, score);
+
+
+
+    pointsX = cosd(angles);
+    pointsY = sind(angles);
+    figure();
+    hold on;
+    plot(pointsX, pointsY, 'X')
+    plot([-1, 1], [0, 0], 'k-'); %x-axis
+    plot([0, 0], [-1, 1], 'k-'); %y-axis
+    xlim([-1.1, 1.1]);
+    ylim([-1.1, 1.1]);
+    %Circle the good points
+    plot(pointsX(best), pointsY(best), 'ro');
+    %Draw the angles in
+    for i=1:3
+        plot([0, pointsX(best(i))], [0, pointsY(best(i))], 'g-');
+    end
+
+
+end
+
+##### SOURCE END #####
+--></body></html>
