@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/pygment_trac.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/extra.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/print.css" media="print" />
+	 
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Elite Dangerous/Sim Panel -- Jak_o_Shadows</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1><a href="http://jak-o-shadows.github.io/index.html">Jak_o_Shadows Web</a></h1>
+        <h2>I really need a tagline</h2>
+        <!--<a href="https://github.com/jasonlong/architect-theme" class="button"><small>View project on</small> GitHub</a>-->
+		  <div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.github.io/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.github.io/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.github.io/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.github.io/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.github.io/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.github.io/nerf/nerf.html">Nerf</a></li>
+                <li><a href="http://jak-o-shadows.github.io/linux/linux.html">Linux</a></li>
+			</ul>
+		</div>
+		
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+        
+<p>
+Elite Dangerous (<a href="https://www.elitedangerous.com/">website</a>, <a href="http://store.steampowered.com/app/359320/">Steam</a>, <a href="https://en.wikipedia.org/wiki/Elite:_Dangerous">wiki</a>) is a spaceship in space game. Whilst the combat isn't overly realistic, you can enable proper newtonian physics. So you <em>can</em> have the full 6 Degrees of Freedom (DOF), and no dampeners on any of them. 
+</p>
+
+<p>Alas, my joystick(s) are rubbish, and cannot hold center. Wouldn't it be nice I thought to be able to trim them, like in real aircraft. Hence this project was born.  I wanted a little control panel that had a few toggle switches, a few lights, a few pushbuttons, some potentiometers and slide potentiometers, and dual joysticks. Also included is a way to easily navigate menus. 
+</p>
+
+<p>
+So all the switches, buttons, etc that I bought are: <br />
+2 joy/thumbsticks: <br />
+<img src="joy.jpg" /> <br />
+1 PSP joystick. This will be used for selecting menus, etc: <br />
+<img src="psp.jpg" /> <br />
+16 pushbuttons: <br />
+<img src="pushbutton.jpg" /> <br />
+16 light up toggle switches - 4 of each colour: <br />
+<img src="toggleswitch.jpg" /> <br />
+<img src="toggleswitchpins.jpg" />
+</p>
+
+<p>
+I chose to use the STM32F103C8T6 ARM Cortex-M3 micro-controller, as I have experience with this, and the STM32F429ZIT6 uC. This is a 32-bit micro-controller with 20Kbyte SRAM, 64Kybyte flash (in this development board), 10 12-bit ADC channels, and 2 I2C, 2 SPI, 3USART and an USB interface. 
+</p>
+<p>
+The development board I chose was the <a href = "http://wiki.stm32duino.com/index.php?title=Blue_Pill">blue-pill version</a>, seen below. This is available very cheaply (~$3) online (think eBay or Aliexpress). Whilst the micro-controller has 37 GPIOs, only 30 are available. Of these, 10 are ADC channels, 2 are I2C, 2 are SPI, and 2 are USB. Hence the effective number of GPIOs for buttons is only 14. Leaving SPI and I2C available allows the use of these protocols to connect to other sensors (e.g. accelerometers), or other micro-controllers (e.g. a port expander, wii-nunchuk/classic controller, or other detachable controller).
+</p>
+<img src = "stm32f103c8t6bluepill.jpg" />
+<p>
+As the STM32F103C8T6 has a USB peripheral, all that needs to be done is to correctly configure it, and the device will show up as a joystick on the computer! (note: have to tell it to use the generic HID joystick device driver, as this is not automatically used on Windows 10. Linux is <em>probably</em> fine). 
+
+
+
+
+
+
+<p>The <a href="https://github.com/insane-adding-machines/unicore-mx">UniCore-MX</a> is a firmware library for a variety of ARM Cortex-M microcontrollers. It is a fork of the <a href="http://libopencm3.org/wiki/Main_Page">libopencm3</a> library. It is used in the ED Panel as I could not get a USB HID working in libopencm3.
+</p>
+
+<p>
+UniCore-MX is best used as a <em>git submodule</em>. To initialise this library, follow: 
+<ol>
+	<li> in the root directory of a git repository: <br />
+	<em>https://github.com/insane-adding-machines/unicore-mx.git code/unicore-mx</em>, where <em>code/unicore-mx</em> is thelocation of the folder you want to go the library to be installed in (relative to the current folder).
+	<li> Must compile UniCore-MX. Move to the <em>code/unicore-mx</em> folder, and type <em>make</em>. Note: Must have the arm-none-eabi toolchain in your PATH.
+</ol>
+</p>
+
+
+<p>
+Progress so far:
+<ul>
+	<li> Device showing as a HID 
+	<li> Analgoue input working
+	<li> Active high digital input working
+	<li> Active low digital input working
+</ul>
+To do:
+<ul>
+	<li> Finalise button layout
+	<li> Wire all buttons in
+	<li> Install all buttons (and switches, joysticks, etc)
+	<li> Create external ports (Have some 2-row DB-15 connectors)
+	<li> Get I2C master working
+	<li> Get I2C slave devices working (MSP430 button/digital input slave)
+	<li> Test I2C with a Nintendo Wii Nunchuk/classic controller
+	<li> ????
+</ul>
+</p>
+
+
+For source, please see: <a href="https://github.com/Jak-o-Shadows/simpanel">https://github.com/Jak-o-Shadows/simpanel</a>
+
+
+		<!---
+        <div class="highlight">
+		<pre><span class="nb">require</span> <span class="s1">'redcarpet'</span>
+<span class="n">markdown</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"Hello World!"</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">markdown</span><span class="o">.</span><span class="n">to_html</span></pre>
+        </div>---->
+
+		</section>
+        <aside id="sidebar">
+		<p></p>
+		<p></p>
+		<!--
+          <a href="https://github.com/jasonlong/architect-theme/archive/master.zip" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jasonlong/architect-theme/archive/master.tar.gz" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>-->
+
+          <p class="repo-owner"><a href="https://github.com/jasonlong/architect-theme">architect-theme</a> is maintained by <a href="https://github.com/jasonlong">jasonlong</a>. Modified by Jak_o_Shadows</p>
+
+          <!--<p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>-->
+		  <p>This page was last modified: 2016-11-24 02:01</p>
+        </aside>
+      </div>
+    </div>
+
+  </body>
+</html>
+
