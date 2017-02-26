@@ -1,0 +1,281 @@
+<html>
+<head>
+<title>canvas test</title>
+
+
+</head>
+<body>
+<p>
+<div id="canvas"></div>
+</p>
+
+<script type="text/javascript">
+
+	///////////////Drawing stuff/////////////////////
+	
+	function createCanvas(parent, width, height){
+		var canvas = {};
+		canvas.node = document.createElement('canvas');
+		canvas.context = canvas.node.getContext('2d');
+		canvas.node.width = width || 100;
+		canvas.node.height = height || 100;
+		parent.appendChild(canvas.node);
+		return canvas;
+	}
+
+	function drawLine(ctx, start, end){
+		ctx.beginPath();
+		ctx.moveTo(start[0], start[1]);
+		ctx.lineTo(end[0], end[1]);
+		ctx.stroke();
+	}
+	
+	function drawMarker(ctx, loc, colour){
+		var radius = 5;
+		ctx.beginPath();
+		ctx.arc(loc[0], loc[1], radius, 0, 2 * Math.PI);
+		ctx.fillStyle = colour;
+		ctx.fill();
+	}
+	
+	function drawText(ctx, loc, text){
+		ctx.fillStyle = 'black';
+		ctx.fillText(text, loc[0]+10, loc[1]+10);
+	
+	}
+	
+	////////////////////////Maths stuff////////////////////////////////
+	
+	function vecAdd(vecA, vecB, n){
+		//Add two vectors of length n
+		retArr = new Array();
+		for (i=0; i<n; i++){
+			retArr[i] = vecA[i] + vecB[i];
+		}
+		return retArr
+	}
+	
+	function vecSub(vecA, vecB, n){
+		//Returns vecA - vecB
+		retArr = new Array();
+		for (i=0;i<n;i++){
+			retArr[i] = vecA[i] - vecB[i];
+		}
+		return retArr
+	}
+	
+	//////////////////////Algorithm stuff////////////////////////////
+	
+	function objectiveFunction(x, y, z, desired){
+		//Calculates the difference between the desired angle, and the actual angles
+		var exp = 4;
+		return Math.pow(x-desired, exp) + Math.pow(y-desired, exp) + Math.pow(y-desired, exp)
+	}
+	
+	function angleDiffs(a, b, c){
+		//Given the three angles to points, a, b, c from a common origin, 
+		//Calculate the angles between the points 
+		d1 = Math.abs(bb -aa);
+		if (d1 > 180){
+			d1 = 360 - d1;
+		}
+		d2 = Math.abs(bb -cc);
+		if (d2 > 180){
+			d2 = 360 - d2;
+		}
+		d3 = Math.abs(aa - cc);
+		if (d3 > 180){
+			d3 = 360 - d3;
+		}
+		return [d1, d2, d3];
+	}
+	
+	function wrapAngles(a, b, c){
+		//Convert angles in [0, 360) to [-180, 180]
+		aa = a;
+		bb = b;
+		cc = c;
+		if (aa > 180){
+			aa = aa - 360;
+		}
+		if (bb > 180){
+			bb = bb - 360;
+		}
+		if (cc > 180){
+			cc = cc - 360;
+		}
+		return [aa, bb, cc];
+	}
+	
+	
+	function findBest(origin, positions, n){
+		//
+		// For the beacon locations in positions, find the 3 that are most equally spaced
+		//
+		// n beacon locations
+		
+		angles = new Array();
+		for (j=0;j<n;j++){
+			//Calculate the angle from the robot origin
+			diff = vecSub(positions[j], origin, 2);
+			angles[j] = 180/Math.PI * Math.atan2(diff[0], diff[1]);
+		}
+		
+		best = [-1, -1, -1];
+		bestScore = 9999999999999999;
+		for (dj = 1;dj<n-2;dj++){
+			for (dk=1;dk<n-dj;dk++){
+				for (i=0;i<n-dj-dk-1;i++){
+					j = i + dj;
+					k = j + dk;
+					a = angles[i];
+					b = angles[j];
+					c = angles[k];
+					
+					//Find distances, after moving angles to +- 180 degrees
+					[aa, bb, cc] = wrapAngles(a, b, c);
+					
+					//Have we worked out the bigger or smaller angle
+					[d1, d2, d3] = angleDiffs(aa, bb, cc);
+					
+					score = objectiveFunction(d1, d2, d3, 120);
+					if (score < bestScore){
+						bestScore = score;
+						best = [i, j, k];
+					}
+				}
+			}
+		}
+		
+		return best;
+	}
+	
+
+	function wrap(val, min, max){
+		//wrap a value to loop around min, max
+		if (val > max){
+			val = min;
+		}
+		if (val < min){
+			val = max;
+		}
+		return val
+	}
+	
+	function limit(val, min, max){
+		//Limit a value to not exceed (in both directions) min, max
+		if (val >= max){
+			val = max-1;
+		}
+		if (val <= min){
+			val = min+1;
+		}
+		return val
+		
+	}
+	
+	/////////////////////Actually do it//////////////////////
+	
+	
+	function update(){
+		frameNum = frameNum+1;
+		if (frameNum>25){
+			frameNum = 0;
+		}
+		ctx.clearRect(0, 0, canvas.node.width, canvas.node.height);
+
+		best = findBest(robotO, positions, n);
+		//Draw lines to best points.
+		for (i=0;i<3;i++){
+			drawLine(ctx, robotO, positions[best[i]]);
+		}
+		
+		//Draw markers
+		for (i=0;i<n;i++){
+			drawMarker(ctx, positions[i], 'red');
+			drawText(ctx, positions[i], i);
+		}
+		
+		drawMarker(ctx, robotO, 'blue');
+		drawText(ctx, robotO, 'robot');
+		
+		if (displayAngles){
+			a = angles[best[0]];
+			b = angles[best[1]];
+			c = angles[best[2]];
+			//Find distances, after moving angles to +- 180 degrees
+			[aa, bb, cc] = wrapAngles(a, b, c);
+			//Have we worked out the bigger or smaller angle
+			[d1, d2, d3] = angleDiffs(aa, bb, cc);
+			//Display them
+			dy = 10;
+			drawText(ctx, [textLoc[0]-10, textLoc[1] + 0*dy], best[0] + "--" + best[1] + ": " + d1)
+			drawText(ctx, [textLoc[0]-10, textLoc[1] + 1*dy], best[1] + "--" + best[2] + ": " + d2)
+			drawText(ctx, [textLoc[0]-10, textLoc[1] + 2*dy], best[0] + "--" + best[2] + ": " + d3)
+		
+		}
+		
+		
+		//Update for next time
+		
+		//perterb the positions
+		if (perterbPoints){
+			for (i=0;i<n;i++){
+				positions[i][0] = xWrapping(positions[i][0] + perterbMaxStep*(Math.random()-0.3), 0, 1024);
+				positions[i][1] = yWrapping(positions[i][1] + perterbMaxStep*(Math.random()-0.5), 0, 1024);
+			}
+		}
+		//Walk the robot origin
+		if (walkRobot){
+			if (walkRobotRandom){
+				//walk it randomly
+				dx = walkMaxStepX*(Math.random() - 0.5);
+				dy = walkMaxStepY*(Math.random() - 0.5);
+			} else{
+				dx = walkMaxStepX;
+				dy = walkMaxStepY;
+			}
+				robotO[0] = walkXWrapping(robotO[0] + dx, 0, 1024);
+				robotO[1] = walkXWrapping(robotO[1] + dy, 0, 1024);
+		}
+		
+	}
+	
+	var container = document.getElementById('canvas');
+	var canvas = createCanvas(container, 1024, 1024);
+	var ctx = canvas.context;
+	
+	
+	O = [512, 512];
+	robotO = O;
+	pos1 = vecAdd(O, [400, 400], 2)
+	pos2 = vecAdd(O, [-400, 300], 2)
+	pos3 = vecAdd(O, [0, -500], 2)
+	pos4 = vecAdd(O, [250, -500], 2)
+	pos5 = vecAdd(O, [-304, -370], 2)
+	pos6 = vecAdd(O, [0, 340], 2)
+	positions = [pos1, pos2, pos3, pos4, pos5, pos6];
+	n = 6;
+	//Settings for perterbing the points
+	perterbPoints = false;
+	perterbMaxStep = 5;
+	xWrapping = wrap;
+	yWrapping = limit;
+	//Settings for walking the robot origin
+	walkRobot = true;
+	walkRobotRandom = false;
+	walkMaxStepX = 5;
+	walkMaxStepY = 0;
+	walkXWrapping = wrap;
+	walkXWrapping = wrap;
+	//Settings for displaying results
+	displayAngles = true;
+	textLoc = [900, 10];
+
+
+	frameNum = 0;
+	setInterval(update, 1000/25);
+</script>
+
+</body>
+</html>
