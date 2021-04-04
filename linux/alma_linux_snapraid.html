@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/pygment_trac.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/extra.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="http://jak-o-shadows.github.io/stylesheets/print.css" media="print" />
+	
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Configuring Snapraid & MergerFs on Alma Linux (2021)</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1><a href="http://jak-o-shadows.github.io/index.html">Jak_o_Shadows Web</a></h1>
+        <h2>THINK. SOLVE. DESIGN. CREATE. TRANSFORM. ENGINEER.</h2>
+        <!--<a href="https://github.com/jasonlong/architect-theme" class="button"><small>View project on</small> GitHub</a>-->
+		  <div id="menu">
+			<ul>
+				<li class="first"><a href="http://jak-o-shadows.github.io/blender/blender.html">Blender</a></li>
+				<li><a href="http://jak-o-shadows.github.io/electronics/electronics.html">Electronics</a></li>
+				<li><a href="http://jak-o-shadows.github.io/python/python.html">Python</a></li>
+				<li><a href="http://jak-o-shadows.github.io/wr/wr.html">Water Rockets</a></li>
+				<li><a href="http://jak-o-shadows.github.io/calculator/casio.html">Calculator Programs</a></li>
+				<li><a href="http://jak-o-shadows.github.io/nerf/nerf.html">Nerf</a></li>
+                <li><a href="http://jak-o-shadows.github.io/linux/linux.html">Linux</a></li>
+			</ul>
+		</div>
+		
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+
+
+
+
+
+<h2>Mounting Disks</h2>
+<p>Each disk (both parity and data storage) must be mounted. This is done on a permanent basis by modifying the <fstab> file. This (best) needs the disk unique identifier. Use <code># fdisk -l</code> to identify which device under <code>/dev/sd*</code> is which. Then use <code># blkid</code> to find the UUID. Note that the folders eachdisk is to be mounted in must be created. I used:
+<ul>
+    <li><code>/mnt/4tb_0</code></li>
+    <li><code>/mnt/4tb_1</code></li>
+    <li><code>/mnt/2tb_0</code></li>
+</ul>
+</p>
+
+<p> My HDD were the following:
+<ul>
+    <li>Data Drive 0:
+        <ul>
+            <li>Mount point: <code>/mnt/4tb_0</code></li>
+            <li>Dev location: <code>/dev/sdb</code></li>
+            <li>UUID: <code>2f03fbbb-00d7-437b-a1ae-fff33fdcd212</code>
+            <li>Use: Data disk 0</li>
+        </ul></li>
+    <li>Parity Drive 1:
+        <ul>
+            <li>Mount point: <code>/mnt/4tb_1</code></li>
+            <li>Dev location: <code>/dev/sdd</code></li>
+            <li>UUID: <code>0750d9ad-3b09-480e-83e5-25d4c7ca74dc</code>
+            <li>Use: Parity disk 0. Note that this matches the size of the largest disk (4TB)</li>
+        </ul></li>
+    <li>Data Drive 1:
+        <ul>
+            <li>Mount point: <code>/mnt/2tb_0</code></li>
+            <li>Dev location: <code>/dev/sda</code></li>
+            <li>UUID: <code>c2c2ab41-04c7-41e8-aba0-91ba0af3be17</code>
+            <li>Use: Data disk 1</li>
+        </ul></li>
+</ul>
+</p>
+
+<p>The following entries were added to <code>/etc/fstab</code>:</p>
+<p>
+<pre><code>
+UUID=2f03fbbb-00d7-437b-a1ae-fff33fdcd212 /mnt/4tb_0 auto nosuid,nodev,nofail,x-gvfs-show 0 0
+UUID=0750d9ad-3b09-480e-83e5-25d4c7ca74dc /mnt/4tb_1 auto nosuid,nodev,nofail,x-gvfs-show 0 0
+UUID=c2c2ab41-04c7-41e8-aba0-91ba0af3be17 /mnt/2tb_0 auto nosuid,nodev,nofail,x-gvfs-show 0 0
+</code></pre>
+</p>
+
+<h2>MergerFS Install and Configuration</h2>
+<p>
+MergerFS is used to pool the various data disks into one. As it is not (currently?) available in the Alma Linux repositories, I compiled it from source before configuring it (which was surprisingly easy).
+</p>
+<h3>Install</h3>
+<p>Install pre-requisites: <code>su -c 'yum install glibc.* glibc-devel.* glibc-headers*'</code>.
+<pre><code>
+cd ~
+mkdir mergerfs
+git clone https://github.com/trapexit/mergerfs.git
+su
+# cd mergherfs
+# tools/install-build-pkgs
+# make rpm
+</coe></pre>.
+Generically it is:
+<pre><code>
+# rpm -i rpmbuild/RPMS/<arch>/mergerfs-<version>.<arch>.rpm
+</code></pre>
+But specifically:
+<pre><code>
+# rpm -i rpmbuild/RPMS/x86_64/mergerfs-2.32.3_26_ga02f3a6-1.el8.x86_64.rpm
+</code></pre>
+</p>
+
+<h3>Install</h3>
+<p>Edit the <code>fstab</code> and add: <code>/mnt/4tb_0:/mnt/2tb_0 /srv/storage fuse.mergerfs direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs 0 0</code>. Then reboot</p>
+
+
+<h2>Snapraid</h2>
+<p>Snapraid does the data redundancy.</p>
+
+<h3>Install</h3>
+<p>
+<pre><code>
+cd ~
+mkdir snapraid
+cd snapraid
+wget https://github.com/amadvance/snapraid/releases/download/v11.5/snapraid-11.5.tar.gz
+tar xf snapraid-*.tar.gz
+cd snapraid-*
+
+./configure
+make
+make check
+su -c 'make install'
+</pre></code>
+
+<h3>Configure</h3>
+<p><code># cp snapraid.conf.example /etc/snapraid.conf</code>, and then change <code>/etc/snapraid.conf</code>:
+<pre><code>
+# Example configuration for snapraid
+
+# Defines the file to use as parity storage
+# It must NOT be in a data disk
+# Format: "parity FILE [,FILE] ..."
+parity /mnt/4tb_1/snapraid.parity
+
+# Defines the files to use as additional parity storage.
+# If specified, they enable the multiple failures protection
+# from two to six level of parity.
+# To enable, uncomment one parity file for each level of extra
+# protection required. Start from 2-parity, and follow in order.
+# It must NOT be in a data disk
+# Format: "X-parity FILE [,FILE] ..."
+#2-parity /mnt/diskq/snapraid.2-parity
+#3-parity /mnt/diskr/snapraid.3-parity
+#4-parity /mnt/disks/snapraid.4-parity
+#5-parity /mnt/diskt/snapraid.5-parity
+#6-parity /mnt/disku/snapraid.6-parity
+
+# Defines the files to use as content list
+# You can use multiple specification to store more copies
+# You must have least one copy for each parity file plus one. Some more don't hurt
+# They can be in the disks used for data, parity or boot,
+# but each file must be in a different disk
+# Format: "content FILE"
+content /var/snapraid.content
+content /mnt/4tb_0/snapraid.content
+content /mnt/2tb_0/snapraid.content
+
+# Defines the data disks to use
+# The name and mount point association is relevant for parity, do not change it
+# WARNING: Adding here your /home, /var or /tmp disks is NOT a good idea!
+# SnapRAID is better suited for files that rarely changes!
+# Format: "data DISK_NAME DISK_MOUNT_POINT"
+data d1 /mnt/4tb_0/
+data d2 /mnt/2tb_0/
+
+# Excludes hidden files and directories (uncomment to enable).
+#nohidden
+# Defines files and directories to exclude
+# Remember that all the paths are relative at the mount points
+# Format: "exclude FILE"
+# Format: "exclude DIR/"
+# Format: "exclude /PATH/FILE"
+# Format: "exclude /PATH/DIR/"
+exclude *.unrecoverable
+exclude /tmp/
+exclude /lost+found/
+
+# Defines the block size in kibi bytes (1024 bytes) (uncomment to enable).
+# WARNING: Changing this value is for experts only!
+# Default value is 256 -> 256 kibi bytes -> 262144 bytes
+# Format: "blocksize SIZE_IN_KiB"
+#blocksize 256
+
+# Defines the hash size in bytes (uncomment to enable).
+# WARNING: Changing this value is for experts only!
+# Default value is 16 -> 128 bits
+# Format: "hashsize SIZE_IN_BYTES"
+#hashsize 16
+
+# Automatically save the state when syncing after the specified amount
+# of GB processed (uncomment to enable).
+# This option is useful to avoid to restart from scratch long 'sync'
+# commands interrupted by a machine crash.
+# It also improves the recovering if a disk break during a 'sync'.
+# Default value is 0, meaning disabled.
+# Format: "autosave SIZE_IN_GB"
+#autosave 500
+
+# Defines the pooling directory where the virtual view of the disk
+# array is created using the "pool" command (uncomment to enable).
+# The files are not really copied here, but just linked using
+# symbolic links.
+# This directory must be outside the array.
+# Format: "pool DIR"
+#pool /pool
+
+# Defines a custom smartctl command to obtain the SMART attributes
+# for each disk. This may be required for RAID controllers and for
+# some USB disk that cannot be autodetected.
+# In the specified options, the "%s" string is replaced by the device name.
+# Refers at the smartmontools documentation about the possible options:
+# RAID -> https://www.smartmontools.org/wiki/Supported_RAID-Controllers
+# USB -> https://www.smartmontools.org/wiki/Supported_USB-Devices
+#smartctl d1 -d sat %s
+#smartctl d2 -d usbjmicron %s
+#smartctl parity -d areca,1/1 /dev/sg0
+#smartctl 2-parity -d areca,2/1 /dev/sg0
+</pre></code>
+
+</p>
+
+<h3>First run</h3>
+<p>Run <code># snapraid sync</code>. Takes some time to run.
+
+
+
+<h2>Sources</h2>
+<p>
+<ul>
+    <li><a href="https://selfhostedhome.com/combining-different-sized-drives-with-mergerfs-and-snapraid/">https://selfhostedhome.com/combining-different-sized-drives-with-mergerfs-and-snapraid/</a></li>
+    <li><a href="https://www.techrepublic.com/article/how-to-properly-automount-a-drive-in-ubuntu-linux/">https://www.techrepublic.com/article/how-to-properly-automount-a-drive-in-ubuntu-linux/</a></li>
+    <li><a href="https://github.com/trapexit/mergerfs">https://github.com/trapexit/mergerfs</a></li>
+    <li><a href="https://linuxconfig.org/install-samba-on-redhat-8">https://linuxconfig.org/install-samba-on-redhat-8</a></li>
+    <li><a href="https://www.linuxtechi.com/install-configure-samba-centos-8/">https://www.linuxtechi.com/install-configure-samba-centos-8/</a></li>
+</ul>
+</p>
+
+
+		<!---
+        <div class="highlight">
+		<pre><span class="nb">require</span> <span class="s1">'redcarpet'</span>
+<span class="n">markdown</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"Hello World!"</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">markdown</span><span class="o">.</span><span class="n">to_html</span></pre>
+        </div>---->
+
+		</section>
+        <aside id="sidebar">
+		<p>$first</p>
+		<p>$second</p>
+		<!--
+          <a href="https://github.com/jasonlong/architect-theme/archive/master.zip" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jasonlong/architect-theme/archive/master.tar.gz" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>-->
+
+          <p class="repo-owner"><a href="https://github.com/jasonlong/architect-theme">architect-theme</a> is maintained by <a href="https://github.com/jasonlong">jasonlong</a>. Modified by Jak_o_Shadows</p>
+
+          <!--<p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>-->
+		  <p>This page was last modified: 2021-04-04 11:41</p>
+        </aside>
+      </div>
+    </div>
+
+  </body>
+</html>
+
